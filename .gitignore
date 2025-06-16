@@ -19,7 +19,31 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
+
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.DocumentRevisions-V100
+.TemporaryItems
+.apdisk
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+System Volume Information/
+
+# Linux
+.Trash-*
+.nfs*
+
 *.suo
 *.ntvs*
 *.njsproj
