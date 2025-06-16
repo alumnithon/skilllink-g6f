@@ -10,7 +10,7 @@ import Header from '../shared/components/Header';
 import Footer from '../shared/components/Footer';
 import SideBar from '../shared/components/SideBar';
 import Loading from '../shared/components/Loading';
-import { isAuthenticated } from '../shared/utils/auth';
+import { useAuthStore } from '../shared/store/authStore';
 
 // Lazy load de las páginas
 const HomePage = lazy(() => import('../shared/pages/HomePage'));
@@ -23,21 +23,24 @@ const NotFoundPage = lazy(() => import('../shared/pages/NotFoundPage'));
 
 // Componente para rutas privadas
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  return isAuthenticated() ? children : <Navigate to="/" />;
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  return isAuthenticated ? children : <Navigate to="/" />;
 };
 
 // Componente para rutas públicas
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-  return isAuthenticated() ? <Navigate to="/panel" /> : children;
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  return isAuthenticated ? <Navigate to="/panel" /> : children;
 };
 
 const Layout = () => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   return (
     <div>
       <Header />
       <Suspense fallback={<Loading />}>
         <div className="flex flex-grow">
-          {isAuthenticated() && <SideBar />}
+          {isAuthenticated && <SideBar />}
           <main className="flex-grow p-4">
             <Outlet />
           </main>

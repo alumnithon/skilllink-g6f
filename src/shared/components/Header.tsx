@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
-import { isAuthenticated, removeAuthToken } from '../utils/auth';
+import { useAuthStore } from '../store/authStore';
 
 const Header = () => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const logout = useAuthStore((state) => state.logout);
+
   return (
     <header className="bg-gray-800 p-4">
       <div className="flex justify-between items-center">
@@ -10,7 +13,7 @@ const Header = () => {
         </a>
         <nav>
           <ul className="flex gap-4">
-            {isAuthenticated() ? (
+            {isAuthenticated ? (
               <>
                 <li>
                   <Link to="/panel" className="hover:underline">
@@ -20,7 +23,7 @@ const Header = () => {
                 <li>
                   <button
                     onClick={() => {
-                      removeAuthToken();
+                      logout();
                       window.location.reload();
                     }}
                     className="hover:underline"
