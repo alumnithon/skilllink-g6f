@@ -1,9 +1,7 @@
-function App() {
-  return (
-    <div className="w-full h-screen flex items-center justify-center">
-      <h1>SkillLink</h1>
-    </div>
-  );
-}
+import AppRouter from './router';
+
+const App = () => {
+  return <AppRouter />;
+};
 
 export default App;
