@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import { Rocket } from 'lucide-react';
 
 const Header = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -8,7 +9,8 @@ const Header = () => {
   return (
     <header className="bg-gray-800 p-4">
       <div className="flex justify-between items-center">
-        <a href="/" className="hover:underline">
+        <a href="/" className="hover:underline flex items-center gap-2">
+          <Rocket />
           <h1 className="text-2xl font-bold">SkillLink</h1>
         </a>
         <nav>
