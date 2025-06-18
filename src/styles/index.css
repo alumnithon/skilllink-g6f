@@ -4,3 +4,27 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   color-scheme: light dark;
 }
+
+@theme {
+  --color-theme-button-primary: var(--color-theme-button-primary);
+  --color-theme-button-secondary: var(--color-theme-button-secondary);
+  --color-theme-bg-primary: var(--color-theme-bg-primary);
+  --color-theme-bg-secondary: var(--color-theme-bg-secondary);
+  --color-theme-bg-tertiary: var(--color-theme-bg-tertiary);
+  --color-theme-text-primary: var(--color-theme-text-primary);
+  --color-theme-text-secondary: var(--color-theme-text-secondary);
+  --color-theme-border-primary: var(--color-theme-border-primary);
+  --color-theme-placeholder-primary: var(--color-theme-placeholder-primary);
+}
+
+.catppuccin {
+  --color-theme-button-primary: #f38ba8;
+  --color-theme-button-secondary: #f8f8f2;
+  --color-theme-bg-primary: #181825;
+  --color-theme-bg-secondary: #313244;
+  --color-theme-bg-tertiary: #45475a;
+  --color-theme-text-primary: #cdd6f4;
+  --color-theme-text-secondary: #bac2de;
+  --color-theme-border-primary: #6c7086;
+  --color-theme-placeholder-primary: #7f849c;
+}
