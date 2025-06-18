@@ -36,12 +36,12 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 const Layout = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Header />
       <Suspense fallback={<Loading />}>
-        <div className="flex flex-grow">
+        <div className="flex-1 flex">
           {isAuthenticated && <SideBar />}
-          <main className="flex-grow p-4">
+          <main className="flex-1">
             <Outlet />
           </main>
         </div>
