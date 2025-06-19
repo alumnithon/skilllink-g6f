@@ -5,8 +5,11 @@ import { Link } from 'react-router-dom';
 import SelectDropdown from '../components/SelectDropdown';
 import { useForm, Controller } from 'react-hook-form';
 import InputPassword from '../components/InputPassword';
+import { registerService } from '../services/authService';
+import useAuthStore from '../store/useAuthStore';
 
 const RegisterPage = () => {
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const {
     register,
     handleSubmit,
@@ -14,8 +17,14 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log('Form submitted:', data);
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const response = await registerService(data);
+      setAuthenticated(response);
+    } catch (error) {
+      console.error('Error durante el registro:', error);
+      alert('Error al registrarse. Por favor, verifica tus datos.');
+    }
   });
 
   return (
