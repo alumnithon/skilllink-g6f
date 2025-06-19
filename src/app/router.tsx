@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import {
   BrowserRouter,
   Route,
@@ -10,7 +10,7 @@ import Header from '../shared/components/Header';
 import Footer from '../shared/components/Footer';
 import SideBar from '../shared/components/SideBar';
 import Loading from '../shared/components/Loading';
-import { useAuthStore } from '../shared/store/authStore';
+import useAuthStore from '../features/auth/store/useAuthStore';
 
 // Lazy load de las páginas
 const HomePage = lazy(() => import('../shared/pages/HomePage'));
@@ -29,6 +29,12 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 
 // Componente para rutas públicas
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+  const getIsAuthenticated = useAuthStore((state) => state.getIsAuthenticated);
+
+  useEffect(() => {
+    getIsAuthenticated();
+  });
+
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   return isAuthenticated ? <Navigate to="/panel" /> : children;
 };
