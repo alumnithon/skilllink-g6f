@@ -4,16 +4,25 @@ import { ButtonPrimary } from '../../../shared/components/Button';
 import InputField from '../components/InputField';
 import { useForm } from 'react-hook-form';
 import InputPassword from '../components/InputPassword';
+import { loginService } from '../services/authService';
+import useAuthStore from '../store/useAuthStore';
 
 const LoginPage = () => {
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log('Form submitted:', data);
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const response = await loginService(data);
+      setAuthenticated(response);
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('Error al iniciar sesión. Por favor, verifica tus credenciales.');
+    }
   });
 
   return (
