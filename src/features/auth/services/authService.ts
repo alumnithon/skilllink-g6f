@@ -1,8 +1,13 @@
 import api from '../../../shared/lib/axios';
-import type { FieldValues } from 'react-hook-form';
+import type {
+  LoginFormData,
+  RegisterFormData,
+} from '../validation/validationSchemas';
+import { loginSchema, registerSchema } from '../validation/validationSchemas';
 
 // Función para iniciar sesión
-export async function loginService(userData: FieldValues) {
+export async function loginService(userData: LoginFormData) {
+  loginSchema.parse(userData);
   try {
     const response = await api.post('/login', userData);
     localStorage.setItem('authToken', response.data.token);
@@ -15,9 +20,14 @@ export async function loginService(userData: FieldValues) {
 }
 
 // Función para registrar un nuevo usuario
-export async function registerService(userData: FieldValues) {
+export async function registerService(userData: RegisterFormData) {
+  const parsedData = registerSchema.parse(userData);
+  const finalData = {
+    ...parsedData,
+    userType: parsedData.userType || 'Estudiante',
+  };
   try {
-    const response = await api.post('/register', userData);
+    const response = await api.post('/register', finalData);
     localStorage.setItem('authToken', response.data.token);
     localStorage.setItem('userData', JSON.stringify(response.data.user));
     return response.data.user;

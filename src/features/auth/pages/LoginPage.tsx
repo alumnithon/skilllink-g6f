@@ -3,17 +3,22 @@ import AuthLayout from '../components/AuthLayout';
 import { ButtonPrimary } from '../../../shared/components/Button';
 import InputField from '../components/InputField';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginSchema } from '../validation/validationSchemas';
 import InputPassword from '../components/InputPassword';
 import { loginService } from '../services/authService';
 import useAuthStore from '../store/useAuthStore';
 
 const LoginPage = () => {
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+  });
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -39,12 +44,12 @@ const LoginPage = () => {
           label="Email"
           type="email"
           placeholder="Ingresa tu email"
-          register={register('email', { required: true })} // Example of using react-hook-form
-          error={errors.email ? 'Email es requerido' : undefined}
+          register={register('email')} // Validación manejada por Zod
+          error={errors.email?.message}
         />
         <InputPassword
-          register={register('password', { required: true })} // Example of using react-hook-form
-          error={errors.password ? 'Contraseña es requerida' : undefined}
+          register={register('password')} // Validación manejada por Zod
+          error={errors.password?.message}
         />
         <div className="flex flex-wrap gap-2 items-center justify-between text-sm">
           <div className="flex items-center gap-2">
