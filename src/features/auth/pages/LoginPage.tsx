@@ -1,13 +1,77 @@
+import { Link } from 'react-router-dom';
+import AuthLayout from '../components/AuthLayout';
+import { ButtonPrimary } from '../../../shared/components/Button';
+import InputField from '../components/InputField';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginSchema } from '../validation/validationSchemas';
+import InputPassword from '../components/InputPassword';
+import { loginService } from '../services/authService';
+import useAuthStore from '../store/useAuthStore';
+
 const LoginPage = () => {
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const response = await loginService(data);
+      setAuthenticated(response);
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('Error al iniciar sesión. Por favor, verifica tus credenciales.');
+    }
+  });
+
   return (
-    <div className="flex flex-col items-center justify-center py-8 gap-4">
-      <h1>Iniciar Sesión</h1>
-      <form>
-        <input type="email" placeholder="Correo electrónico" />
-        <input type="password" placeholder="Contraseña" />
-        <button type="submit">Entrar</button>
+    <AuthLayout
+      title="Iniciar Sesión"
+      description="Accede a tu cuenta para continuar aprendiendo."
+      imageUrl="https://images4.alphacoders.com/136/thumb-1920-1369866.png"
+    >
+      <form
+        className="w-full bg-theme-bg-tertiary flex flex-col gap-4"
+        onSubmit={onSubmit}
+      >
+        <InputField
+          label="Email"
+          type="email"
+          placeholder="Ingresa tu email"
+          register={register('email')} // Validación manejada por Zod
+          error={errors.email?.message}
+        />
+        <InputPassword
+          register={register('password')} // Validación manejada por Zod
+          error={errors.password?.message}
+        />
+        <div className="flex flex-wrap gap-2 items-center justify-between text-sm">
+          <div className="flex items-center gap-2">
+            <input type="checkbox" />
+            <label className="flex items-center gap-2">Recordarme</label>
+          </div>
+          <Link to="#" className="text-theme-button-primary hover:underline">
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </div>
+        <ButtonPrimary title="Iniciar Sesion" styles="mt-3" />
+        <p className="flex gap-2 flex-wrap justify-center text-center text-sm text-gray-500 mt-2">
+          ¿No tienes una cuenta?{' '}
+          <Link
+            to="/registrarse"
+            className="text-theme-button-primary hover:underline"
+          >
+            Registrarse →
+          </Link>
+        </p>
       </form>
-    </div>
+    </AuthLayout>
   );
 };
 

@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
+import useAuthStore from '../../features/auth/store/useAuthStore.ts';
 import { Rocket } from 'lucide-react';
 
 const Header = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const logout = useAuthStore((state) => state.logout);
+  const user = useAuthStore((state) => state.user);
 
   return (
     <header className="bg-gray-800 p-4">
@@ -17,11 +18,7 @@ const Header = () => {
           <ul className="flex gap-4">
             {isAuthenticated ? (
               <>
-                <li>
-                  <Link to="/panel" className="hover:underline">
-                    Panel
-                  </Link>
-                </li>
+                {user && <li>{user.fullName}</li>}
                 <li>
                   <button
                     onClick={() => {
