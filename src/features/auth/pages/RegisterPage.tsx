@@ -4,18 +4,23 @@ import InputField from '../components/InputField';
 import { Link } from 'react-router-dom';
 import SelectDropdown from '../components/SelectDropdown';
 import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { registerSchema } from '../validation/validationSchemas';
 import InputPassword from '../components/InputPassword';
 import { registerService } from '../services/authService';
 import useAuthStore from '../store/useAuthStore';
 
 const RegisterPage = () => {
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(registerSchema),
+  });
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -42,29 +47,28 @@ const RegisterPage = () => {
           type="name"
           placeholder="Ingresa tu Nombre Completo"
           register={register('fullName', { required: true })}
-          error={errors.fullName ? 'Nombre completo es requerido' : undefined}
+          error={errors.fullName?.message}
         />
         <InputField
           label="Email"
           type="email"
           placeholder="Ingresa tu email"
           register={register('email', { required: true })}
-          error={errors.email ? 'Email es requerido' : undefined}
+          error={errors.email?.message}
         />
         <InputPassword
           register={register('password', { required: true })}
-          error={errors.password ? 'Contraseña es requerida' : undefined}
+          error={errors.password?.message}
         />
         <Controller
           name="userType"
           control={control}
-          defaultValue={null}
-          rules={{ required: 'Selecciona un rol' }}
+          defaultValue={undefined}
           render={({ field }) => (
             <SelectDropdown
-              value={field.value}
+              value={field.value || ''}
               onChange={field.onChange}
-              error={errors.userType ? 'Selecciona un rol' : undefined}
+              error={errors.userType?.message}
             />
           )}
         />
