@@ -3,7 +3,10 @@ import { ButtonPrimary } from '../../../shared/components/Button';
 
 const HeroSection = () => {
   return (
-    <section className="bg-theme-bg-primary text-theme-text-primary relative overflow-hidden min-h-screen flex items-center">
+    <section
+      id="hero"
+      className="bg-theme-bg-primary text-theme-text-primary relative overflow-hidden min-h-screen flex items-center"
+    >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600/30 via-transparent to-green-600/20"></div>
 
