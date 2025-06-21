@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // src/shared/components/SideBar.tsx
-=======
-// sidebar de DashboardPage
->>>>>>> 62239f5 (feat(button): Add secondary button variant to button.tsx)
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
@@ -17,32 +13,10 @@ import {
   Edit,
   Bell,
   Settings,
-<<<<<<< HEAD
+  LogOut,
 } from 'lucide-react';
 
 import { ButtonLogout, ButtonProfileOption } from './Button';
-import useAuthStore from '../../features/auth/store/useAuthStore';
-
-const Sidebar = () => {
-  const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
-
-  if (!user) return null; // Por si el usuario no está cargado aún
-
-  const userType = user.role === 'Mentor' ? 'mentor' : 'estudiante';
-  const userName = user.fullName;
-  const notifications = user.notifications;
-  const unreadMessages = user.unreadMessages;
-
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
-
-  const menuItemsEstudiante = [
-    { name: 'Inicio', icon: <Home className="w-[0.9375rem] h-[0.9375rem]" />, path: 'inicio' },
-    { name: 'Explorar', icon: <Search className="w-[0.9375rem] h-[0.9375rem]" />, path: 'oportunidades' },
-    { name: 'Mentores', icon: <Users className="w-[0.9375rem] h-[0.9375rem]" />, path: 'conexiones' },
-=======
-  LogOut,
-} from 'lucide-react';
 
 interface SidebarProps {
   userType: 'estudiante' | 'mentor';
@@ -52,34 +26,18 @@ interface SidebarProps {
   onLogout: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
-  userType,
-  userName,
-  notifications,
-  unreadMessages,
-  onLogout,
-}) => {
+const Sidebar = ({ userType, userName, notifications, unreadMessages, onLogout }: SidebarProps) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
-  const menuItems = [
+  const menuItemsEstudiante = [
     { name: 'Inicio', icon: <Home className="w-[0.9375rem] h-[0.9375rem]" />, path: 'inicio' },
-    {
-      name: userType === 'mentor' ? 'Mis Oportunidades' : 'Explorar',
-      icon: <Search className="w-[0.9375rem] h-[0.9375rem]" />,
-      path: 'oportunidades',
-    },
-    {
-      name: userType === 'mentor' ? 'Mis Conexiones' : 'Mentores',
-      icon: <Users className="w-[0.9375rem] h-[0.9375rem]" />,
-      path: 'conexiones',
-    },
->>>>>>> 62239f5 (feat(button): Add secondary button variant to button.tsx)
+    { name: 'Explorar', icon: <Search className="w-[0.9375rem] h-[0.9375rem]" />, path: 'oportunidades' },
+    { name: 'Mentores', icon: <Users className="w-[0.9375rem] h-[0.9375rem]" />, path: 'conexiones' },
     { name: 'Mi Aprendizaje', icon: <BookOpen className="w-[0.9375rem] h-[0.9375rem]" />, path: 'aprendizaje' },
     { name: 'Mis Sesiones', icon: <Calendar className="w-[0.9375rem] h-[0.9375rem]" />, path: 'sesiones' },
     { name: 'Mensajes', icon: <MessageCircle className="w-[0.9375rem] h-[0.9375rem]" />, path: 'mensajes' },
   ];
 
-<<<<<<< HEAD
   const menuItemsMentor = [
     { name: 'Inicio', icon: <Home className="w-[0.9375rem] h-[0.9375rem]" />, path: 'inicio' },
     { name: 'Mis Oportunidades', icon: <Search className="w-[0.9375rem] h-[0.9375rem]" />, path: 'oportunidades' },
@@ -94,30 +52,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className="
-        w-[220px]
-        bg-white
-        flex
-        flex-col
-        h-auto
-        lg:h-auto
-        md:h-[calc(100vh-4rem-3rem)]
-        md:overflow-y-auto
-        md:scrollbar-none
-      "
-    >
+      className=" w-[220px] bg-white flex flex-col h-auto lg:h-auto md:h-[calc(100vh-4rem-3rem)] md:overflow-y-auto md:scrollbar-none" >
       <div className="flex flex-col p-4">
         <h1 className="text-[#5865F2] text-[1.3rem] font-bold font-mono text-center mb-[1.5rem] mt-[1.5rem] tracking-wide leading-snug">
           Bienvenido {userName}
-=======
-  const basePath = `/panel/${userType}`;
-
-  return (
-    <aside className="w-[220px] bg-white flex flex-col">
-      <div className="p-4">
-        <h1 className="text-[#5865F2] text-[1.3rem] font-bold font-mono text-center mb-[1.5rem] mt-[1.5rem] tracking-wide leading-snug">
-          Bienvenid{userType === 'mentor' ? 'o' : 'a'} {userName}
->>>>>>> 62239f5 (feat(button): Add secondary button variant to button.tsx)
         </h1>
 
         <nav className="flex flex-col gap-1">
@@ -141,7 +79,6 @@ const Sidebar: React.FC<SidebarProps> = ({
             </NavLink>
           ))}
 
-<<<<<<< HEAD
           <div>
             <button
               onClick={() => setShowProfileMenu(!showProfileMenu)}
@@ -150,9 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               <User className="w-[0.9375rem] h-[0.9375rem] rounded-full border border-[#000000]" />
               <span>Mi Perfil</span>
               <ChevronDown
-                className={`ml-auto w-[0.9375rem] h-[0.9375rem] transition-transform ${
-                  showProfileMenu ? 'rotate-180' : ''
-                }`}
+                className={`ml-auto w-[0.9375rem] h-[0.9375rem] transition-transform ${showProfileMenu ? 'rotate-180' : ''}`}
               />
             </button>
 
@@ -183,54 +118,13 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       <div className="p-4 mt-10 lg:mt-auto">
-        <ButtonLogout title="Salir" onClick={logout} />
-=======
-          {/* Perfil */}
-          <button
-            onClick={() => setShowProfileMenu(!showProfileMenu)}
-            className="flex items-center gap-[0.5rem] bg-transparent border-[0.025rem] border-[#E5E7EB] text-left text-gray-700 hover:bg-[#F3F4F6] text-[0.9375rem] font-bold rounded p-[0.70rem] w-[12rem] mx-auto"
-          >
-            <User className="w-[0.9375rem] h-[0.9375rem] rounded-full border border-[#000000]" />
-            <span>Mi Perfil</span>
-            <ChevronDown
-              className={`ml-auto w-[0.9375rem] h-[0.9375rem] transition-transform ${
-                showProfileMenu ? 'rotate-180' : ''
-              }`}
-            />
-          </button>
-
-          {showProfileMenu && (
-            <div className="w-[12rem] mx-auto p-[0.5rem] bg-gray-50 rounded">
-              <div className="flex items-center gap-[0.375rem] text-left text-gray-700 hover:bg-gray-100 text-[0.875rem] rounded p-[0.50rem] cursor-pointer">
-                <Edit className="w-[0.9375rem] h-[0.9375rem]" />
-                <span>Cuenta</span>
-              </div>
-              <div className="flex items-center gap-[0.375rem] text-left text-gray-700 hover:bg-gray-100 text-[0.875rem] rounded p-[0.50rem] cursor-pointer">
-                <Settings className="w-[0.9375rem] h-[0.9375rem]" />
-                <span>Editar Perfil</span>
-              </div>
-              <div className="flex items-center gap-[0.375rem] text-left text-gray-700 hover:bg-gray-100 text-[0.875rem] rounded p-[0.50rem] cursor-pointer">
-                <Bell className="w-[0.9375rem] h-[0.9375rem]" />
-                <span>Notificaciones</span>
-              </div>
-            </div>
-          )}
-        </nav>
-
-        {/* BOTÓN SALIR */}
-        <div className="mt-[5rem] mb-[0.50rem]">
-          <button
-            onClick={onLogout}
-            className="flex items-center justify-center gap-[0.25rem] bg-[#F3F4F6] border-[0.025rem] border-[#F3F4F6] text-[#6B7280] hover:bg-red-50 text-[0.625rem] rounded p-[0.2rem] w-[4rem] mx-auto"
-          >
-            <LogOut className="w-[0.75rem] h-[0.75rem]" />
-            <span>Salir</span>
-          </button>
-        </div>
->>>>>>> 62239f5 (feat(button): Add secondary button variant to button.tsx)
+        <ButtonLogout 
+          title="Salir" 
+          onClick={onLogout} 
+          icon={<LogOut className="w-[0.9375rem] h-[0.9375rem]" />}
+        />
       </div>
     </aside>
   );
 };
-
 export default Sidebar;
