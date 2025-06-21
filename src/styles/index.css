@@ -1,6 +1,19 @@
 @import 'tailwindcss';
 
+:root {
+  color-scheme: light dark;
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Font.ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
 @theme {
+  --font-Inter: 'Inter', sans-serif;
   --color-theme-button-primary: var(--color-theme-button-primary);
   --color-theme-button-secondary: var(--color-theme-button-secondary);
   --color-theme-bg-primary: var(--color-theme-bg-primary);
@@ -17,7 +30,7 @@
   --color-theme-focus-primary: var(--color-theme-focus-primary);
 }
 
-:root {
+.default {
   --color-theme-button-primary: #5865f2; /* Botón primario */
   --color-theme-button-secondary: #4f46e5; /* Botón secundario */
   --color-theme-button-tertiary: #3b82f6; /* Botón terciario */
