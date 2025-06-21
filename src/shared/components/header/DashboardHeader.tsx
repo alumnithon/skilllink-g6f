@@ -7,7 +7,7 @@ const DashboardHeader = () => {
   const user = useAuthStore((state) => state.user);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-theme-button-primary to-theme-button-secondary shadow-lg backdrop-blur-sm">
+    <header className="bg-gradient-to-r from-theme-button-primary to-theme-button-secondary shadow-lg backdrop-blur-sm">
       <div className="max-w-8xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex justify-between items-center h-16 lg:h-20">
           {/* Logo clickeable que va al dashboard */}
