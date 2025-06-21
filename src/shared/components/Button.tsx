@@ -15,17 +15,3 @@ export const ButtonPrimary = ({ title, styles, onClick }: ButtonProps) => {
     </button>
   );
 };
-
-export const ButtonSecondary = ({ title, styles, onClick }: ButtonProps) => {
-  return (
-   <button
-   type="button"
-   onClick={onClick} 
-   className={`W-full bg-theme-button-secondary py-3 rounded-lg font-semibold text-lg hover:bg-theme-button-secondary/60 transition ${styles || ''}`}
- >
-
- {title}
- </button>
-  );
-};
-
