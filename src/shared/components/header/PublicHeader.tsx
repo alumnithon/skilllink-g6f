@@ -42,13 +42,13 @@ const PublicHeader = () => {
               Inicio
             </button>
             <button
-              onClick={() => scrollToSection('explorar')}
+              onClick={() => scrollToSection('roles')}
               className="text-white/90 hover:text-white font-medium transition-colors duration-300"
             >
               Cómo funciona
             </button>
             <button
-              onClick={() => scrollToSection('proyectos')}
+              onClick={() => scrollToSection('explorar')}
               className="text-white/90 hover:text-white font-medium transition-colors duration-300"
             >
               Explorar
@@ -122,7 +122,7 @@ const PublicHeader = () => {
               </button>
               <button
                 onClick={() => {
-                  scrollToSection('explorar');
+                  scrollToSection('roles');
                   setMobileMenuOpen(false);
                 }}
                 className="text-gray-800 hover:text-theme-button-primary font-medium transition-colors duration-300 text-left"
@@ -131,7 +131,7 @@ const PublicHeader = () => {
               </button>
               <button
                 onClick={() => {
-                  scrollToSection('proyectos');
+                  scrollToSection('explorar');
                   setMobileMenuOpen(false);
                 }}
                 className="text-gray-800 hover:text-theme-button-primary font-medium transition-colors duration-300 text-left"
