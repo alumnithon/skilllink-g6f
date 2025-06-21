@@ -20,7 +20,7 @@ const ContactSection = () => {
   });
 
   return (
-    <section id="contacto" className="bg-theme-bg-secondary py-12 lg:py-16">
+    <section id="contacto" className="bg-theme-bg-secondary py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Contact Content - Two Columns Compact */}
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">

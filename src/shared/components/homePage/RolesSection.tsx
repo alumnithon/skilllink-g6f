@@ -20,7 +20,7 @@ const RolesSection = () => {
   ];
 
   return (
-    <section id="explorar" className="bg-theme-bg-secondary py-16 lg:py-24">
+    <section id="roles" className="bg-theme-bg-secondary py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-10">
