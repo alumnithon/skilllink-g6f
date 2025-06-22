@@ -1,3 +1,4 @@
+// src/features/auth/store/useAuthStore.ts
 import { create } from 'zustand';
 
 interface AuthState {
@@ -12,6 +13,8 @@ interface User {
   id: string;
   fullName: string;
   role: string;
+  notifications: number; 
+  unreadMessages: number; 
 }
 
 const useAuthStore = create<AuthState>((set) => ({
@@ -32,7 +35,7 @@ const useAuthStore = create<AuthState>((set) => ({
     }));
   },
   logout: () => {
-    set({ isAuthenticated: false });
+    set({ isAuthenticated: false, user: null });
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
   },
