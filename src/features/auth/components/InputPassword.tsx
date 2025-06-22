@@ -20,12 +20,12 @@ const InputPassword = ({ error, register }: InputPasswordProps) => {
         <input
           type={inputType}
           placeholder="Enter your password"
-          className="w-full border border-theme-border-primary rounded-lg px-4 py-2 placeholder-theme-placeholder-primary"
+          className="w-full border border-theme-border-primary rounded-lg px-4 py-2 placeholder-theme-placeholder-primary focus:outline-none focus:ring-2 focus:ring-theme-button-primary"
           {...register}
         />
         <button
           type="button"
-          className="absolute right-0 mr-2 text-theme-text-primary"
+          className="absolute right-0 mr-2 text-theme-text-primary "
           onClick={() => setShowPassword(!showPassword)}
         >
           {showPassword ? (

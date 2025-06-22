@@ -6,7 +6,7 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom';
-import Header from '../shared/components/Header';
+import Header from '../shared/components/header/Header';
 import Footer from '../shared/components/Footer';
 import SideBar from '../shared/components/SideBar';
 import Loading from '../shared/components/Loading';
