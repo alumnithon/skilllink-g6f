@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import useAuthStore from '../../auth/store/useAuthStore';
 import Sidebar from '../../../shared/components/SideBar';
-import Footer from '../../../shared/components/Footer';
-import DashboardHeader from '../../../shared/components/header/DashboardHeader';
 import axios from 'axios';
 
 const DashboardPage = () => {
@@ -48,7 +46,6 @@ const DashboardPage = () => {
 
   return (
     <div className="w-screen h-screen flex flex-col overflow-x-hidden">
-      <DashboardHeader />
 
       {/* Botón hamburguesa Responsive */}
       <button
@@ -82,7 +79,7 @@ const DashboardPage = () => {
               className="bg-white w-64 h-full shadow-lg p-4 overflow-y-auto scrollbar-none"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Botón cerrar */}
+              {/* Botón cerrar del botón de hamburguesa */}
               <button
                 className="mb-4"
                 onClick={() => setSidebarOpen(false)}
@@ -125,8 +122,6 @@ const DashboardPage = () => {
           </div>
         </main>
       </div>
-
-      <Footer />
     </div>
   );
 };

@@ -16,18 +16,18 @@ import {
   LogOut,
 } from 'lucide-react';
 
+import useAuthStore from '../../features/auth/store/useAuthStore';
 import { ButtonLogout, ButtonProfileOption } from './Button';
 
-interface SidebarProps {
-  userType: 'mentor' | 'estudiante';
-  userName: string;
-  notifications: number;
-  unreadMessages: number;
-  onLogout: () => void;
-}
-
-const Sidebar = ({ userType, userName, notifications, unreadMessages, onLogout }: SidebarProps) => {
+const Sidebar = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const { user, logout } = useAuthStore();
+
+  const notifications = 2;
+  const unreadMessages = 3;
+
+  const userType = user?.role?.toLowerCase() === 'mentor' ? 'mentor' : 'estudiante';
+  const userName = user?.fullName || 'Usuario';
 
   const menuItemsEstudiante = [
     { name: 'Inicio', icon: <Home className="w-[0.9375rem] h-[0.9375rem]" />, path: 'inicio' },
@@ -120,7 +120,7 @@ const Sidebar = ({ userType, userName, notifications, unreadMessages, onLogout }
       <div className="p-4 mt-10 lg:mt-auto">
         <ButtonLogout 
           title="Salir" 
-          onClick={onLogout} 
+          onClick={logout} 
           icon={<LogOut className="w-[0.9375rem] h-[0.9375rem]" />}
         />
       </div>
