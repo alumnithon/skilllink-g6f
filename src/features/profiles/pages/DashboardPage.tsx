@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import useAuthStore from '../../auth/store/useAuthStore';
 import Sidebar from '../../../shared/components/SideBar';
 import Footer from '../../../shared/components/Footer';
-import Header from '../../../shared/components/Header';
+import DashboardHeader from '../../../shared/components/header/DashboardHeader';
 import axios from 'axios';
 
 const DashboardPage = () => {
@@ -48,7 +48,7 @@ const DashboardPage = () => {
 
   return (
     <div className="w-screen h-screen flex flex-col overflow-x-hidden">
-      <Header />
+      <DashboardHeader />
 
       {/* Botón hamburguesa Responsive */}
       <button
