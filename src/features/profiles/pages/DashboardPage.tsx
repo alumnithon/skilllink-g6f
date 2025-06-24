@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const DashboardPage = () => {
 
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, isAuthenticated} = useAuthStore();
 
   const [loading, setLoading] = useState(true);
   const [metrics, setMetrics] = useState({
@@ -42,7 +42,7 @@ const DashboardPage = () => {
   if (loading) return <p className="text-center mt-8">Cargando...</p>;
   if (!user || !isAuthenticated) return <p className="text-center mt-8">No estás autenticado.</p>;
 
-  const { notifications, unreadMessages, oportunidades } = metrics;
+  const {unreadMessages, oportunidades } = metrics;
 
   return (
     <div className="w-screen h-screen flex flex-col overflow-x-hidden">
@@ -61,11 +61,6 @@ const DashboardPage = () => {
         {/* Sidebar Desktop */}
         <div className="hidden lg:flex">
           <Sidebar
-            userType={user.role.toLowerCase() === 'mentor' ? 'mentor' : 'estudiante'}
-            userName={user.fullName}
-            notifications={notifications}
-            unreadMessages={unreadMessages}
-            onLogout={logout}
           />
         </div>
 
@@ -90,11 +85,6 @@ const DashboardPage = () => {
               </button>
 
               <Sidebar
-                userType={user.role.toLowerCase() === 'mentor' ? 'mentor' : 'estudiante'}
-                userName={user.fullName}
-                notifications={notifications}
-                unreadMessages={unreadMessages}
-                onLogout={logout}
               />
             </div>
           </div>
