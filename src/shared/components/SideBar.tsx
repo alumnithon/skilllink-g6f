@@ -19,7 +19,7 @@ import {
 import { ButtonLogout, ButtonProfileOption } from './Button';
 
 interface SidebarProps {
-  userType: 'estudiante' | 'mentor';
+  userType: 'mentor' | 'estudiante';
   userName: string;
   notifications: number;
   unreadMessages: number;
