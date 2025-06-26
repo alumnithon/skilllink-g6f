@@ -11,13 +11,14 @@ import Footer from '../shared/components/Footer';
 import SideBar from '../shared/components/SideBar';
 import Loading from '../shared/components/Loading';
 import useAuthStore from '../features/auth/store/useAuthStore';
+import DashboardPage from '../features/profiles/pages/DashboardPage';
 
 // Lazy load de las páginas
 const HomePage = lazy(() => import('../shared/pages/HomePage'));
 const LoginPage = lazy(() => import('../features/auth/pages/LoginPage'));
 const RegisterPage = lazy(() => import('../features/auth/pages/RegisterPage'));
-const DashboardPage = lazy(
-  () => import('../features/profiles/pages/DashboardPage')
+const ProfilePage = lazy(
+  () => import('../features/profiles/pages/ProfilePage')
 );
 const NotFoundPage = lazy(() => import('../shared/pages/NotFoundPage'));
 
@@ -42,12 +43,12 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 const Layout = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-screen relative z-40">
       <Header />
       <Suspense fallback={<Loading />}>
-        <div className="flex-1 flex">
+        <div className="flex-1 flex h-[calc(100vh-4.25rem-4rem)] md:h-[calc(100vh-4.5rem-5rem)]">
           {isAuthenticated && <SideBar />}
-          <main className="flex-1">
+          <main className="max-h-full w-full">
             <Outlet />
           </main>
         </div>
@@ -82,6 +83,7 @@ const AppRouter = () => {
           }
         >
           <Route path="/panel" element={<DashboardPage />} />
+          <Route path="/perfil" element={<ProfilePage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
