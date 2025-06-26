@@ -22,6 +22,7 @@ const DashboardHeader = ({ onEditProfile }: DashboardHeaderProps) => {
     <header className="bg-gradient-to-r from-theme-button-primary to-theme-button-secondary shadow-lg backdrop-blur-sm relative z-50">
       <div className="max-w-8xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex justify-between items-center h-16 lg:h-20">
+          
           {/* Mobile toggle button */}
           <button
             onClick={() => window.dispatchEvent(new Event('openSidebar'))}
