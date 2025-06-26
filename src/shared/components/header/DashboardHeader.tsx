@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Rocket, Bell, Settings, User, ChevronDown } from 'lucide-react';
+import { Rocket, Bell, Settings, User, ChevronDown, MoreVertical } from 'lucide-react';
 import useAuthStore from '../../../features/auth/store/useAuthStore';
 
 const DashboardHeader = () => {
@@ -16,6 +16,14 @@ const DashboardHeader = () => {
     <header className="bg-gradient-to-r from-theme-button-primary to-theme-button-secondary shadow-lg backdrop-blur-sm">
       <div className="max-w-8xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex justify-between items-center h-16 lg:h-20">
+          
+          <button
+            onClick={() => window.dispatchEvent(new Event('openSidebar'))}
+            className="lg:hidden p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 mr-4"
+           >
+            <MoreVertical className="w-5 h-5" />
+           </button>
+
           {/* Logo clickeable que va al PANEL */}
           <button
             onClick={handleLogoClick}
