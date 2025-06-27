@@ -26,35 +26,78 @@ const Sidebar = () => {
   const notifications = 2;
   const unreadMessages = 3;
 
-  const userType = user?.role?.toLowerCase() === 'mentor' ? 'mentor' : 'estudiante';
+  const userType =
+    user?.role?.toLowerCase() === 'mentor' ? 'mentor' : 'estudiante';
   const userName = user?.fullName || 'Usuario';
 
   const menuItemsEstudiante = [
-    { name: 'Inicio', icon: <Home className="w-[0.9375rem] h-[0.9375rem]" />, path: 'inicio' },
-    { name: 'Explorar', icon: <Search className="w-[0.9375rem] h-[0.9375rem]" />, path: 'oportunidades' },
-    { name: 'Mentores', icon: <Users className="w-[0.9375rem] h-[0.9375rem]" />, path: 'conexiones' },
-    { name: 'Mi Aprendizaje', icon: <BookOpen className="w-[0.9375rem] h-[0.9375rem]" />, path: 'aprendizaje' },
-    { name: 'Mis Sesiones', icon: <Calendar className="w-[0.9375rem] h-[0.9375rem]" />, path: 'sesiones' },
-    { name: 'Mensajes', icon: <MessageCircle className="w-[0.9375rem] h-[0.9375rem]" />, path: 'mensajes' },
+    {
+      name: 'Inicio',
+      icon: <Home className="w-[0.9375rem] h-[0.9375rem]" />,
+      path: 'inicio',
+    },
+    {
+      name: 'Explorar',
+      icon: <Search className="w-[0.9375rem] h-[0.9375rem]" />,
+      path: 'oportunidades',
+    },
+    {
+      name: 'Mentores',
+      icon: <Users className="w-[0.9375rem] h-[0.9375rem]" />,
+      path: 'conexiones',
+    },
+    {
+      name: 'Mi Aprendizaje',
+      icon: <BookOpen className="w-[0.9375rem] h-[0.9375rem]" />,
+      path: 'aprendizaje',
+    },
+    {
+      name: 'Mis Sesiones',
+      icon: <Calendar className="w-[0.9375rem] h-[0.9375rem]" />,
+      path: 'sesiones',
+    },
+    {
+      name: 'Mensajes',
+      icon: <MessageCircle className="w-[0.9375rem] h-[0.9375rem]" />,
+      path: 'mensajes',
+    },
   ];
 
   const menuItemsMentor = [
-    { name: 'Inicio', icon: <Home className="w-[0.9375rem] h-[0.9375rem]" />, path: 'inicio' },
-    { name: 'Mis Oportunidades', icon: <Search className="w-[0.9375rem] h-[0.9375rem]" />, path: 'oportunidades' },
-    { name: 'Mis Conexiones', icon: <Users className="w-[0.9375rem] h-[0.9375rem]" />, path: 'conexiones' },
-    { name: 'Mis Sesiones', icon: <Calendar className="w-[0.9375rem] h-[0.9375rem]" />, path: 'sesiones' },
-    { name: 'Mensajes', icon: <MessageCircle className="w-[0.9375rem] h-[0.9375rem]" />, path: 'mensajes' },
+    {
+      name: 'Inicio',
+      icon: <Home className="w-[0.9375rem] h-[0.9375rem]" />,
+      path: 'inicio',
+    },
+    {
+      name: 'Mis Oportunidades',
+      icon: <Search className="w-[0.9375rem] h-[0.9375rem]" />,
+      path: 'oportunidades',
+    },
+    {
+      name: 'Mis Conexiones',
+      icon: <Users className="w-[0.9375rem] h-[0.9375rem]" />,
+      path: 'conexiones',
+    },
+    {
+      name: 'Mis Sesiones',
+      icon: <Calendar className="w-[0.9375rem] h-[0.9375rem]" />,
+      path: 'sesiones',
+    },
+    {
+      name: 'Mensajes',
+      icon: <MessageCircle className="w-[0.9375rem] h-[0.9375rem]" />,
+      path: 'mensajes',
+    },
   ];
 
-  const menuItems = userType === 'mentor' ? menuItemsMentor : menuItemsEstudiante;
-
-  const basePath = `/panel/${userType}`;
+  const menuItems =
+    userType === 'mentor' ? menuItemsMentor : menuItemsEstudiante;
 
   return (
-    <aside
-      className=" w-[220px] bg-white flex flex-col h-auto lg:h-auto md:h-[calc(100vh-4rem-3rem)] md:overflow-y-auto md:scrollbar-none" >
+    <aside className="bg-white w-80 flex flex-col h-auto lg:h-auto md:h-[calc(100vh-4rem-3rem)]">
       <div className="flex flex-col p-4">
-        <h1 className="text-[#5865F2] text-[1.3rem] font-bold font-mono text-center mb-[1.5rem] mt-[1.5rem] tracking-wide leading-snug">
+        <h1 className="text-[#5865F2] text-center text-[1.3rem] font-bold mb-[1.5rem] mt-[1.5rem]">
           Bienvenido {userName}
         </h1>
 
@@ -62,9 +105,9 @@ const Sidebar = () => {
           {menuItems.map((item, index) => (
             <NavLink
               key={index}
-              to={`${basePath}/${item.path}`}
+              to={item.path}
               className={({ isActive }) =>
-                `flex items-center gap-[0.5rem] bg-transparent border-[0.025rem] border-[#E5E7EB] text-left text-gray-700 hover:bg-[#F3F4F6] text-[0.9375rem] font-bold rounded p-[0.70rem] w-[12rem] mx-auto ${
+                `w-full flex items-center gap-[0.5rem] bg-transparent border-[0.025rem] border-[#E5E7EB] text-left text-gray-700 hover:bg-[#F3F4F6] text-[0.9375rem] font-bold rounded p-[0.70rem] mx-auto ${
                   isActive ? 'bg-[#E5E7EB]' : ''
                 }`
               }
@@ -82,7 +125,7 @@ const Sidebar = () => {
           <div>
             <button
               onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="flex items-center gap-[0.5rem] bg-transparent border-[0.025rem] border-[#E5E7EB] text-left text-gray-700 hover:bg-[#F3F4F6] text-[0.9375rem] font-bold rounded p-[0.70rem] w-[12rem] mx-auto"
+              className="flex w-full items-center gap-[0.5rem] bg-transparent border-[0.025rem] border-[#E5E7EB] text-left text-gray-700 hover:bg-[#F3F4F6] text-[0.9375rem] font-bold rounded p-[0.70rem] mx-auto"
             >
               <User className="w-[0.9375rem] h-[0.9375rem] rounded-full border border-[#000000]" />
               <span>Mi Perfil</span>
@@ -118,9 +161,9 @@ const Sidebar = () => {
       </div>
 
       <div className="p-4 mt-10 lg:mt-auto">
-        <ButtonLogout 
-          title="Salir" 
-          onClick={logout} 
+        <ButtonLogout
+          title="Salir"
+          onClick={logout}
           icon={<LogOut className="w-[0.9375rem] h-[0.9375rem]" />}
         />
       </div>
