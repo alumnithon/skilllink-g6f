@@ -1,5 +1,6 @@
+// src/shared/components/header/DashboardHeader.tsx
 import { useNavigate } from 'react-router-dom';
-import { Rocket, Bell, Settings, User, ChevronDown } from 'lucide-react';
+import { Rocket, Bell, Settings, User, ChevronDown, MoreVertical } from 'lucide-react';
 import useAuthStore from '../../../features/auth/store/useAuthStore';
 import { useState } from 'react';
 
@@ -14,14 +15,22 @@ const DashboardHeader = ({ onEditProfile }: DashboardHeaderProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleLogoClick = () => {
-    // Para usuarios autenticados, ir al panel en lugar del inicio público
     navigate('/panel');
   };
 
   return (
-    <header className="bg-gradient-to-r from-theme-button-primary to-theme-button-secondary shadow-lg backdrop-blur-sm z-50 relative">
+    <header className="bg-gradient-to-r from-theme-button-primary to-theme-button-secondary shadow-lg backdrop-blur-sm relative z-50">
       <div className="max-w-8xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex justify-between items-center h-16 lg:h-20">
+          
+          {/* Mobile toggle button */}
+          <button
+            onClick={() => window.dispatchEvent(new Event('openSidebar'))}
+            className="lg:hidden p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 mr-4"
+          >
+            <MoreVertical className="w-6 h-6" />
+          </button>
+
           {/* Logo clickeable que va al PANEL */}
           <button
             onClick={handleLogoClick}
@@ -61,13 +70,15 @@ const DashboardHeader = ({ onEditProfile }: DashboardHeaderProps) => {
                   </span>
                 </div>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    isDropdownOpen ? 'rotate-180' : ''
+                  }`}
                 />
               </button>
 
-              {/* Dropdown Menu - con z-index muy alto y posicionamiento mejorado */}
+              {/* Dropdown Menu */}
               {isDropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-[9999] transform opacity-100 visible translate-y-0">
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-50 transform opacity-100 visible translate-y-0">
                   <div className="py-2">
                     <button
                       onClick={() => {
@@ -109,7 +120,7 @@ const DashboardHeader = ({ onEditProfile }: DashboardHeaderProps) => {
       {/* Overlay para cerrar dropdown al hacer click fuera */}
       {isDropdownOpen && (
         <div
-          className="fixed inset-0 z-[9998]"
+          className="fixed inset-0 z-40"
           onClick={() => setIsDropdownOpen(false)}
         />
       )}

@@ -34,12 +34,14 @@ const DashboardPage = () => {
   const {unreadMessages, oportunidades } = metrics;
 
   return (
-        <main className="flex-1 bg-[#36393F4D] pt-4 overflow-y-auto">
-          <div className="bg-[#FFFFFFF7] p-8 max-w-[1100px] w-full rounded-lg shadow-sm mx-auto mt-4">
-            <h1 className="text-2xl font-bold text-[#16A34A] mb-2">¡Hola {user.fullName}!</h1>
+        <main className="flex-1 bg-[#36393F4D] pt-4 overflow-y-auto px-4 sm:px-6 md:px-8">
+          <div className="bg-[#FFFFFFF7] p-4 sm:p-6 md:p-8 max-w-[1100px] w-full rounded-lg shadow-sm mx-auto mt-4">
+            <h1 className="text-xl sm:text-2x1 md:text-3x1 font-bold text-[#16A34A] mb-2">
+              ¡Hola {user.fullName}!
+              </h1>
 
             {oportunidades > 0 || unreadMessages > 0 ? (
-              <p className="text-[#4B5563]">
+              <p className="text-sm sm:text-base md:text-lg text-[#4B5563]">
                 Tienes{' '}
                 {oportunidades > 0 &&
                   `${oportunidades} nueva${oportunidades > 1 ? 's' : ''} oportunidad${oportunidades > 1 ? 'es' : ''}`}
@@ -50,7 +52,9 @@ const DashboardPage = () => {
                   }.`}
               </p>
             ) : (
-              <p className="text-[#4B5563]">No tienes nuevas oportunidades ni mensajes por ahora.</p>
+              <p className="text-sm sm:text-base md:text-lg text-[#4B5563]">
+                No tienes nuevas oportunidades ni mensajes por ahora.
+                </p>
             )}
           </div>
         </main>
