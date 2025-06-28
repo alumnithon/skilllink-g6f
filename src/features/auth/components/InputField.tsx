@@ -25,7 +25,11 @@ const InputField = ({
       <input
         type={type}
         placeholder={placeholder}
-        className={`w-full border border-theme-border-primary rounded-lg px-4 py-2.5 placeholder-theme-placeholder-primary focus:outline-none focus:ring-2 focus:ring-theme-button-primary focus:border-transparent transition-all text-sm ${inputBg}`}
+        className={`w-full border border-theme-border-primary rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-theme-button-primary focus:border-transparent transition-all text-sm ${inputBg} ${
+          inputBg === 'bg-white'
+            ? 'text-gray-900 placeholder-gray-500'
+            : 'placeholder-theme-placeholder-primary text-theme-text-primary'
+        }`}
         {...register}
       />
       {error && <span className="text-xs text-red-500">{error}</span>}

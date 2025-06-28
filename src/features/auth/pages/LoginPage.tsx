@@ -32,9 +32,10 @@ const LoginPage = () => {
 
   return (
     <AuthLayout
-      title="Iniciar Sesión"
-      description="Accede a tu cuenta para continuar aprendiendo."
-      imageUrl="https://images4.alphacoders.com/136/thumb-1920-1369866.png"
+      title="Inicia Sesión"
+      description="¡Bienvenido de nuevo! Por favor, inicia sesión para acceder a tu cuenta."
+      image="../../public/images/ilustracion-login.svg"
+      showBackButton={true}
     >
       <form
         className="w-full bg-theme-bg-tertiary flex flex-col gap-4"
@@ -43,30 +44,37 @@ const LoginPage = () => {
         <InputField
           label="Email"
           type="email"
-          placeholder="Ingresa tu email"
-          register={register('email')} // Validación manejada por Zod
+          placeholder="Ingresa tu Email"
+          register={register('email')}
           error={errors.email?.message}
+          labelColor="text-white"
+          inputBg="bg-white"
         />
+
         <InputPassword
-          register={register('password')} // Validación manejada por Zod
+          register={register('password')}
           error={errors.password?.message}
+          labelColor="text-white"
+          inputBg="bg-white"
         />
+
         <div className="flex flex-wrap gap-2 items-center justify-between text-sm">
           <div className="flex items-center gap-2">
             <input type="checkbox" />
-            <label className="flex items-center gap-2">Recordarme</label>
+            <label className="flex items-center gap-2 text-white">
+              Recuérdame
+            </label>
           </div>
-          <Link to="#" className="text-theme-button-primary hover:underline">
+          <Link to="#" className="text-white hover:underline">
             ¿Olvidaste tu contraseña?
           </Link>
         </div>
-        <ButtonPrimary title="Iniciar Sesion" styles="mt-3" />
-        <p className="flex gap-2 flex-wrap justify-center text-center text-sm text-gray-500 mt-2">
+
+        <ButtonPrimary title="Iniciar Sesión" styles="mt-3" />
+
+        <p className="flex gap-2 flex-wrap justify-center text-center text-sm text-white mt-2">
           ¿No tienes una cuenta?{' '}
-          <Link
-            to="/registrarse"
-            className="text-theme-button-primary hover:underline"
-          >
+          <Link to="/registrarse" className="font-semibold hover:underline">
             Registrarse →
           </Link>
         </p>

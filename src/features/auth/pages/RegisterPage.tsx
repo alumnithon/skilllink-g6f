@@ -34,9 +34,10 @@ const RegisterPage = () => {
 
   return (
     <AuthLayout
-      title="Crea tu cuenta"
-      description="Regístrate para comenzar a usar nuestra aplicación"
-      imageUrl="https://images4.alphacoders.com/136/thumb-1920-1369866.png"
+      title="Regístrate"
+      description="Crea una cuenta para desbloquear funciones exclusivas."
+      image=".../../public/images/ilustracion-register.svg"
+      showBackButton={false}
     >
       <form
         className="w-full bg-theme-bg-tertiary flex flex-col gap-4"
@@ -44,42 +45,64 @@ const RegisterPage = () => {
       >
         <InputField
           label="Nombre Completo"
-          type="name"
-          placeholder="Ingresa tu Nombre Completo"
-          register={register('name', { required: true })}
+          type="text"
+          placeholder="Ingresa tu nombre completo"
+          register={register('name')}
           error={errors.name?.message}
+          labelColor="text-white"
+          inputBg="bg-white"
         />
+
         <InputField
           label="Email"
           type="email"
           placeholder="Ingresa tu email"
-          register={register('email', { required: true })}
+          register={register('email')}
           error={errors.email?.message}
+          labelColor="text-white"
+          inputBg="bg-white"
         />
+
         <InputPassword
-          register={register('password', { required: true })}
+          register={register('password')}
           error={errors.password?.message}
+          labelColor="text-white"
+          inputBg="bg-white"
         />
-        <Controller
-          name="role"
-          control={control}
-          defaultValue={undefined}
-          render={({ field }) => (
-            <SelectDropdown
-              value={field.value || ''}
-              onChange={field.onChange}
-              error={errors.role?.message}
-            />
-          )}
-        />
-        <ButtonPrimary title="Registrate" styles="mt-3" />
-        <p className="flex gap-2 flex-wrap justify-center text-center text-sm text-gray-500 mt-2">
+
+        <div>
+          <label className="block text-white font-medium mb-1">
+            Tipo de Usuario
+          </label>
+          <Controller
+            name="role"
+            control={control}
+            defaultValue="ROLE_USER"
+            render={({ field }) => (
+              <SelectDropdown
+                value={field.value || 'Estudiante'}
+                onChange={field.onChange}
+                error={errors.role?.message}
+              />
+            )}
+          />
+        </div>
+
+        <div className="flex items-start gap-2 text-sm text-white">
+          <input
+            type="checkbox"
+            className="mt-1 rounded border-gray-300 text-green-500 focus:ring-green-500"
+            required
+          />
+          <span>Acepto los Términos de Uso y la Política de Privacidad</span>
+        </div>
+
+        <ButtonPrimary title="Regístrate" styles="mt-3" />
+
+        <p className="flex gap-2 flex-wrap justify-center text-center text-sm text-white mt-2">
           ¿Ya tienes una cuenta?{' '}
-          <Link
-            to="/iniciar-sesion"
-            className="text-theme-button-primary hover:underline"
-          >
-            Iniciar sesion →
+          <Link to="/iniciar-sesion" className="font-semibold hover:underline">
+            Iniciar sesión →
           </Link>
         </p>
       </form>
