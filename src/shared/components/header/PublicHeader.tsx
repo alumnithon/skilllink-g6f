@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Rocket, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 const PublicHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -62,7 +62,7 @@ const PublicHeader = () => {
   };
 
   return (
-    <header className="h-16 md:h-20 sticky top-0 left-0 right-0 z-50 bg-gradient-to-r from-theme-button-primary to-theme-button-secondary shadow-lg backdrop-blur-sm">
+    <header className="h-16 md:h-20 fixed top-0 left-0 right-0 z-[100] bg-gradient-to-r from-theme-button-primary to-theme-button-secondary shadow-lg backdrop-blur-sm">
       <div className="max-w-8xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex justify-between items-center h-16 lg:h-20">
           {/* Logo clickeable con scroll al hero*/}
@@ -70,10 +70,11 @@ const PublicHeader = () => {
             onClick={() => scrollToSection('hero')}
             className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-300"
           >
-            <Rocket className="w-8 h-8 text-white" />
-            <h1 className="text-2xl lg:text-3xl font-bold text-white">
-              SkillLink
-            </h1>
+            <img
+              src="/logos/skilllink-logo-light.svg"
+              alt="SkillLink Logo"
+              className="h-12 lg:h-18 w-auto"
+            />
           </button>
 
           {/* Navigation Links con indicador visual mejorado */}
@@ -97,7 +98,7 @@ const PublicHeader = () => {
                   activeSection === 'roles' ? 'text-white' : ''
                 }`}
               >
-                Cómo funciona
+                Cómo participar
                 {activeSection === 'roles' && (
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full shadow-lg"></div>
                 )}

@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { Rocket } from 'lucide-react';
 
 const AuthHeader = () => {
   const navigate = useNavigate();
@@ -15,10 +14,11 @@ const AuthHeader = () => {
         onClick={handleLogoClick}
         className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-300 cursor-pointer"
       >
-        <Rocket className="w-8 h-8 text-theme-button-primary" />
-        <h1 className="text-2xl lg:text-3xl font-bold text-theme-text-dark">
-          SkillLink
-        </h1>
+        <img
+          src="/logos/skilllink-logo-dark.svg"
+          alt="SkillLink Logo"
+          className="h-12 lg:h-18 w-auto"
+        />
       </button>
     </div>
   );

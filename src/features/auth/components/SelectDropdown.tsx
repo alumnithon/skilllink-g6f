@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 interface SelectDropdownProps {
   value: string | null;
@@ -13,52 +14,91 @@ const SelectDropdown = ({ value, onChange, error }: SelectDropdownProps) => {
     onChange(option);
     setDropdownOpen(false);
   };
+
+  const options = [
+    {
+      value: 'Estudiante',
+      icon: '🎓',
+      title: 'Estudiante',
+      description: 'Aprende y desarrolla nuevas habilidades',
+    },
+    {
+      value: 'Mentor',
+      icon: '👨‍🏫',
+      title: 'Mentor',
+      description: 'Comparte tu conocimiento y experiencia',
+    },
+  ];
+
+  const selectedOption = options.find((opt) => opt.value === value);
+
+  // Si no hay valor seleccionado, usar Estudiante por defecto
+  const displayOption = selectedOption || options[0];
+
   return (
-    <div>
-      <label className="block mb-1 font-medium">Tipo de usuario</label>
-      <div className="w-full bg-theme-bg-tertiary flex flex-col gap-4">
-        <button
-          type="button"
-          onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="relative w-full border border-theme-border-primary rounded-lg px-4 py-2 text-left"
-        >
-          <span id="selectedOption">
-            {value === 'ROLE_MENTOR' ? 'Mentor' : 'Estudiante'}
-          </span>
-        </button>
-        {dropdownOpen && (
-          <div
-            id="dropdown"
-            className="absolute mt-12 bg-theme-bg-tertiary border border-theme-border-primary rounded-lg shadow-md z-10"
-          >
-            <div
-              onClick={() => handleSelect('ROLE_USER')}
-              className="p-4 hover:bg-theme-bg-secondary rounded-t-lg cursor-pointer border-b border-theme-border-primary"
-            >
-              <div className="flex items-center gap-2">
-                <span>🎓</span>
-                <span>Estudiante</span>
-              </div>
-              <p className="text-sm text-gray-500">
-                Aprende y desarrolla nuevas habilidades
-              </p>
-            </div>
-            <div
-              onClick={() => handleSelect('ROLE_MENTOR')}
-              className="p-4 hover:bg-theme-bg-secondary rounded-b-lg cursor-pointer"
-            >
-              <div className="flex items-center gap-2">
-                <span>👨‍🏫</span>
-                <span>Mentor</span>
-              </div>
-              <p className="text-sm text-gray-500">
-                Comparte tu conocimiento y experiencia
-              </p>
-            </div>
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+        className="relative w-full bg-white border border-theme-border-primary rounded-lg px-4 py-2.5 text-left focus:outline-none focus:ring-2 focus:ring-theme-button-primary focus:border-transparent transition-all text-sm text-gray-900 flex items-center justify-between"
+      >
+        {selectedOption ? (
+          <div className="flex items-center gap-2">
+            <span className="text-base">{displayOption.icon}</span>
+            <span className="font-medium">{displayOption.title}</span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <span className="text-base">{displayOption.icon}</span>
+            <span className="font-medium text-gray-900">
+              {displayOption.title}
+            </span>
           </div>
         )}
-      </div>
-      {error && <span className="text-xs text-red-500">{error}</span>}
+        <ChevronDown
+          className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+            dropdownOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+
+      {dropdownOpen && (
+        <>
+          {/* Overlay para cerrar el dropdown */}
+          <div
+            className="fixed inset-0 z-10"
+            onClick={() => setDropdownOpen(false)}
+          />
+
+          {/* Dropdown menu */}
+          <div className="absolute top-full mt-1 w-full bg-white border border-theme-border-primary rounded-lg shadow-lg z-20 overflow-hidden">
+            {options.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => handleSelect(option.value)}
+                className="w-full p-4 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0 focus:outline-none focus:bg-gray-50"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">{option.icon}</span>
+                  <div>
+                    <div className="font-medium text-gray-900">
+                      {option.title}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {option.description}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      {error && (
+        <span className="text-xs text-red-500 mt-1 block">{error}</span>
+      )}
     </div>
   );
 };
