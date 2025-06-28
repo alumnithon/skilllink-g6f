@@ -36,7 +36,7 @@ const RegisterPage = () => {
     <AuthLayout
       title="Regístrate"
       description="Crea una cuenta para desbloquear funciones exclusivas."
-      image=".../../public/images/ilustracion-register.svg"
+      image="/images/ilustracion-register.svg"
       showBackButton={false}
     >
       <form
@@ -47,7 +47,7 @@ const RegisterPage = () => {
           label="Nombre Completo"
           type="text"
           placeholder="Ingresa tu nombre completo"
-          register={register('name')}
+          register={register('name', { required: true })}
           error={errors.name?.message}
           labelColor="text-white"
           inputBg="bg-white"
@@ -57,14 +57,14 @@ const RegisterPage = () => {
           label="Email"
           type="email"
           placeholder="Ingresa tu email"
-          register={register('email')}
+          register={register('email', { required: true })}
           error={errors.email?.message}
           labelColor="text-white"
           inputBg="bg-white"
         />
 
         <InputPassword
-          register={register('password')}
+          register={register('password', { required: true })}
           error={errors.password?.message}
           labelColor="text-white"
           inputBg="bg-white"
@@ -77,26 +77,16 @@ const RegisterPage = () => {
           <Controller
             name="role"
             control={control}
-            defaultValue="ROLE_USER"
+            defaultValue={undefined}
             render={({ field }) => (
               <SelectDropdown
-                value={field.value || 'Estudiante'}
+                value={field.value || ''}
                 onChange={field.onChange}
                 error={errors.role?.message}
               />
             )}
           />
         </div>
-
-        <div className="flex items-start gap-2 text-sm text-white">
-          <input
-            type="checkbox"
-            className="mt-1 rounded border-gray-300 text-green-500 focus:ring-green-500"
-            required
-          />
-          <span>Acepto los Términos de Uso y la Política de Privacidad</span>
-        </div>
-
         <ButtonPrimary title="Regístrate" styles="mt-3" />
 
         <p className="flex gap-2 flex-wrap justify-center text-center text-sm text-white mt-2">

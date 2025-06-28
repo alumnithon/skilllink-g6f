@@ -17,13 +17,13 @@ const SelectDropdown = ({ value, onChange, error }: SelectDropdownProps) => {
 
   const options = [
     {
-      value: 'Estudiante',
+      value: 'ROLE_USER',
       icon: '🎓',
       title: 'Estudiante',
       description: 'Aprende y desarrolla nuevas habilidades',
     },
     {
-      value: 'Mentor',
+      value: 'ROLE_MENTOR',
       icon: '👨‍🏫',
       title: 'Mentor',
       description: 'Comparte tu conocimiento y experiencia',

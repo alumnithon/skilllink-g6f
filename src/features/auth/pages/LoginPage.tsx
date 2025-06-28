@@ -34,7 +34,7 @@ const LoginPage = () => {
     <AuthLayout
       title="Inicia Sesión"
       description="¡Bienvenido de nuevo! Por favor, inicia sesión para acceder a tu cuenta."
-      image="../../public/images/ilustracion-login.svg"
+      image="/images/ilustracion-login.svg"
       showBackButton={true}
     >
       <form

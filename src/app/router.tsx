@@ -26,24 +26,58 @@ const NotFoundPage = lazy(() => import('../shared/pages/NotFoundPage'));
 
 // Componente para rutas privadas
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  return isAuthenticated ? children : <Navigate to="/" />;
-};
-
-// Componente para rutas públicas
-const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-  const getIsAuthenticated = useAuthStore((state) => state.getIsAuthenticated);
+  const { isAuthenticated, isInitialized, getIsAuthenticated } = useAuthStore();
 
   useEffect(() => {
-    getIsAuthenticated();
-  });
+    if (!isInitialized) {
+      getIsAuthenticated();
+    }
+  }, [isInitialized, getIsAuthenticated]);
 
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  return isAuthenticated ? <Navigate to="/panel" /> : children;
+  // Mostrar loading mientras inicializa
+  if (!isInitialized) {
+    return <Loading />;
+  }
+
+  return isAuthenticated ? children : <Navigate to="/" replace />;
+};
+
+// Componente para rutas públicas (solo redirige si estamos en páginas específicas de auth)
+const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, isInitialized, getIsAuthenticated } = useAuthStore();
+
+  useEffect(() => {
+    if (!isInitialized) {
+      getIsAuthenticated();
+    }
+  }, [isInitialized, getIsAuthenticated]);
+
+  // Mostrar loading mientras inicializa
+  if (!isInitialized) {
+    return <Loading />;
+  }
+
+  // Solo redirigir al panel si estamos en las páginas de login o registro
+  // y el usuario ya está autenticado
+  const currentPath = window.location.pathname;
+  const authPages = ['/iniciar-sesion', '/registrarse'];
+
+  if (isAuthenticated && authPages.includes(currentPath)) {
+    return <Navigate to="/panel" replace />;
+  }
+
+  return children;
 };
 
 const Layout = () => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { isAuthenticated, isInitialized, getIsAuthenticated } = useAuthStore();
+
+  useEffect(() => {
+    if (!isInitialized) {
+      getIsAuthenticated();
+    }
+  }, [isInitialized, getIsAuthenticated]);
+
   return (
     <div className="flex flex-col h-screen relative z-40">
       <Header />
@@ -63,6 +97,20 @@ const Layout = () => {
 
 // Configuración de rutas principales
 const AppRouter = () => {
+  const { isInitialized, getIsAuthenticated } = useAuthStore();
+
+  // Inicializar el estado de autenticación al cargar la app
+  useEffect(() => {
+    if (!isInitialized) {
+      getIsAuthenticated();
+    }
+  }, [isInitialized, getIsAuthenticated]);
+
+  // Mostrar loading mientras inicializa la app
+  if (!isInitialized) {
+    return <Loading />;
+  }
+
   return (
     <BrowserRouter>
       <Routes>

@@ -4,6 +4,7 @@ import { create } from 'zustand';
 interface AuthState {
   getIsAuthenticated: () => void;
   isAuthenticated: boolean;
+  isInitialized: boolean;
   user: User | null;
   setAuthenticated: (userData: User) => void;
   logout: () => void;
@@ -18,12 +19,14 @@ interface User {
 
 const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
+  isInitialized: false,
   getIsAuthenticated: () => {
     const userData = localStorage.getItem('userData');
     const token = localStorage.getItem('authToken');
     set(() => ({
       user: JSON.parse(userData || 'null'),
       isAuthenticated: !!token,
+      isInitialized: true,
     }));
   },
   user: null,
@@ -31,10 +34,11 @@ const useAuthStore = create<AuthState>((set) => ({
     set(() => ({
       isAuthenticated: true,
       user: userData,
+      isInitialized: true,
     }));
   },
   logout: () => {
-    set({ isAuthenticated: false, user: null });
+    set({ isAuthenticated: false, user: null, isInitialized: true });
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
   },
