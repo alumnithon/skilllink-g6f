@@ -63,6 +63,37 @@ export interface CreateProjectData {
   tagsName: string[];
 }
 
+// Tipo para la inscripción
+export interface EnrollmentData {
+  contentType: 'COURSE' | 'CHALLENGE' | 'PROJECT';
+}
+
+// Servicio para inscribirse a una oportunidad
+export async function enrollInOpportunityService(
+  opportunityId: number | string,
+  contentType: 'COURSE' | 'CHALLENGE' | 'PROJECT'
+): Promise<{ message: string }> {
+  try {
+    const enrollmentData: EnrollmentData = {
+      contentType,
+    };
+
+    const response = await api.post(
+      `/mylearning/${opportunityId}/enroll`,
+      enrollmentData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken') || ''}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error enrolling in opportunity:', error);
+    throw error;
+  }
+}
+
 // Servicio para obtener cursos
 export async function getCoursesService(): Promise<Course[]> {
   try {

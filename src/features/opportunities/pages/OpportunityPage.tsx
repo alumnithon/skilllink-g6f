@@ -6,14 +6,51 @@ import useAuthStore from '../../auth/store/useAuthStore';
 import { useOpportunities } from '../hooks/useOpportunities';
 import Loading from '../../../shared/components/Loading';
 import CreateOpportunityModal from '../components/CreateOpportunityModal';
+import { enrollInOpportunityService } from '../services/opportunityService';
 
 const OpportunityPage = () => {
   const user = useAuthStore((state) => state.user);
   const { opportunities, loading, error, refetch } = useOpportunities();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [enrollingId, setEnrollingId] = useState<number | null>(null);
 
   const handleCreateSuccess = () => {
     refetch();
+  };
+
+  // Función para convertir el tipo de oportunidad al formato requerido por la API
+  const getContentType = (type: string): 'COURSE' | 'CHALLENGE' | 'PROJECT' => {
+    switch (type.toLowerCase()) {
+      case 'curso':
+        return 'COURSE';
+      case 'desafío':
+        return 'CHALLENGE';
+      case 'proyecto':
+        return 'PROJECT';
+      default:
+        return 'COURSE';
+    }
+  };
+
+  const handleEnrollment = async (opportunityId: number, type: string) => {
+    if (user?.role !== 'ROLE_USER') return;
+
+    try {
+      setEnrollingId(opportunityId);
+      const contentType = getContentType(type);
+      await enrollInOpportunityService(opportunityId, contentType);
+
+      // Mostrar mensaje de éxito (puedes usar un toast o alert)
+      alert('Te has inscrito exitosamente a la oportunidad');
+
+      // Opcional: recargar las oportunidades
+      refetch();
+    } catch (error) {
+      console.error('Error al inscribirse:', error);
+      alert('Error al inscribirse a la oportunidad. Inténtalo de nuevo.');
+    } finally {
+      setEnrollingId(null);
+    }
   };
 
   return (
@@ -87,6 +124,7 @@ const OpportunityPage = () => {
               ) : (
                 opportunities.map((opportunity) => (
                   <OpportunityCard
+                    key={opportunity.id}
                     id={opportunity.id}
                     type={opportunity.type}
                     title={opportunity.title}
@@ -94,9 +132,19 @@ const OpportunityPage = () => {
                     tagsName={opportunity.tags}
                     difficultyLevel={opportunity.difficultyLevel}
                     buttonTitle={
-                      user?.role === 'ROLE_MENTOR' ? 'Gestionar' : 'Aplicar'
+                      user?.role === 'ROLE_MENTOR'
+                        ? 'Gestionar'
+                        : enrollingId === opportunity.id
+                          ? 'Inscribiendo...'
+                          : 'Aplicar'
                     }
                     hasCertification={opportunity.hasCertification || false}
+                    onClick={() => {
+                      if (user?.role === 'ROLE_USER') {
+                        handleEnrollment(opportunity.id, opportunity.type);
+                      }
+                      // Para ROLE_MENTOR, aquí podrías agregar lógica de gestión
+                    }}
                   />
                 ))
               )}
