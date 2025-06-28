@@ -1,4 +1,3 @@
-// src/features/sessions/components/SessionCard.tsx
 import React from 'react';
 import {
   Calendar,

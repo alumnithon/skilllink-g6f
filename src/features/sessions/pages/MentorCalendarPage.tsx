@@ -1,5 +1,4 @@
-// src/features/sessions/pages/MentorCalendarPage.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Calendar, ChevronLeft, ChevronRight, Plus, User } from 'lucide-react';
 import Breadcrumb from '../../../shared/components/Breadcrumb';
 import { useSessionsData, type SessionData } from '../hooks/useSessionsData';

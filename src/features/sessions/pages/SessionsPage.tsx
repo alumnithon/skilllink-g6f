@@ -1,5 +1,4 @@
-// src/features/sessions/pages/StudentSessionsPage.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Calendar, Bell, CheckCircle } from 'lucide-react';
 import Breadcrumb from '../../../shared/components/Breadcrumb';
 import { useSessionsData, type SessionData } from '../hooks/useSessionsData';
