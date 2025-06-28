@@ -28,7 +28,7 @@ const Sidebar = () => {
 
   const userType =
     user?.role?.toLowerCase() === 'mentor' ? 'mentor' : 'estudiante';
-  const userName = user?.fullName || 'Usuario';
+  const userName = user?.name || 'Usuario';
 
   const menuItemsEstudiante = [
     {
