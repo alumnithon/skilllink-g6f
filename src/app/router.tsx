@@ -13,6 +13,7 @@ import Loading from '../shared/components/Loading';
 import useAuthStore from '../features/auth/store/useAuthStore';
 import DashboardPage from '../features/profiles/pages/DashboardPage';
 import OpportunityPage from '../features/opportunities/pages/OpportunityPage';
+import SessionsPage from '../features/sessions/pages/SessionsPage';
 
 // Lazy load de las páginas
 const HomePage = lazy(() => import('../shared/pages/HomePage'));
@@ -87,6 +88,7 @@ const AppRouter = () => {
           <Route path="/panel" element={<DashboardPage />} />
           <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/oportunidades" element={<OpportunityPage />} />
+          <Route path="/sesiones" element={<SessionsPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
