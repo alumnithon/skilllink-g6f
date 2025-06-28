@@ -6,10 +6,10 @@ export const loginSchema = z.object({
 });
 
 export const registerSchema = z.object({
-  fullName: z.string().min(1, 'El nombre completo es requerido'),
+  name: z.string().min(1, 'El nombre completo es requerido'),
   email: z.string().email('Email inválido'),
   password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
-  userType: z.enum(['Estudiante', 'Mentor']).optional(),
+  role: z.enum(['ROLE_USER', 'ROLE_MENTOR']).optional(),
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
