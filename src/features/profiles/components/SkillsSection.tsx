@@ -1,10 +1,18 @@
-import type { MentorProfile } from '../services/profileService';
+import type { UserProfile } from '../services/profileService';
+import useAuthStore from '../../auth/store/useAuthStore';
 
 interface SkillsSectionProps {
-  profile: MentorProfile;
+  profile: UserProfile | undefined;
 }
 
 const SkillsSection = ({ profile }: SkillsSectionProps) => {
+  const { user } = useAuthStore();
+  const isEmpty =
+    !profile?.skills ||
+    profile.skills.length === 0 ||
+    (profile.skills.length === 1 && profile.skills[0] === '');
+  const isStudent = user?.role === 'ROLE_USER';
+
   const getSkillColor = (skill: string) => {
     const colors = [
       'bg-blue-100 text-blue-700',
@@ -31,16 +39,36 @@ const SkillsSection = ({ profile }: SkillsSectionProps) => {
         Habilidades
       </h2>
 
-      <div className="flex flex-wrap gap-2">
-        {profile.skills.map((skill) => (
-          <span
-            key={skill}
-            className={`px-3 py-1 rounded-full text-sm font-medium font-Inter ${getSkillColor(skill)}`}
-          >
-            {skill}
-          </span>
-        ))}
-      </div>
+      {isEmpty ? (
+        <div className="text-center py-8 text-gray-400">
+          <div className="mb-4">
+            <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gray-100 flex items-center justify-center">
+              <span className="text-2xl">🛠️</span>
+            </div>
+          </div>
+          <p className="text-sm">
+            {isStudent
+              ? 'Agrega las habilidades que has aprendido o que estás desarrollando.'
+              : 'Comparte las tecnologías y habilidades en las que eres experto.'}
+          </p>
+          <p className="text-xs mt-2">
+            React, JavaScript, Python, Design Thinking, etc.
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-2">
+          {profile.skills
+            .filter((skill) => skill && skill.trim() !== '') // Filtrar skills vacías
+            .map((skill) => (
+              <span
+                key={skill}
+                className={`px-3 py-1 rounded-full text-sm font-medium font-Inter ${getSkillColor(skill)}`}
+              >
+                {skill}
+              </span>
+            ))}
+        </div>
+      )}
     </div>
   );
 };

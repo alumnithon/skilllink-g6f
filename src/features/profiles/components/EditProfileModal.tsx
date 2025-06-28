@@ -3,12 +3,12 @@ import { X, User, Mail, Github, Linkedin, CheckCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useUpdateProfile } from '../hooks/useProfile';
-import type { MentorProfile } from '../services/profileService';
+import { useUpdateMyProfile } from '../hooks/useProfile';
+import type { UserProfile } from '../services/profileService';
 import InputField from '../../auth/components/InputField';
 import TextareaField from '../../auth/components/TextareaField';
+import useAuthStore from '../../auth/store/useAuthStore';
 
-// Schema de validación mejorado
 const profileSchema = z.object({
   bio: z
     .string()
@@ -24,6 +24,7 @@ const profileSchema = z.object({
   }),
   contactEmail: z.string().email('Email inválido'),
   contactPhone: z.string().optional(),
+  ocupation: z.string().optional(),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
@@ -31,7 +32,7 @@ type ProfileFormData = z.infer<typeof profileSchema>;
 interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  profile: MentorProfile;
+  profile: UserProfile;
   section?: 'all' | 'about' | 'skills' | 'contact' | 'experience' | 'interests';
 }
 
@@ -43,7 +44,8 @@ const EditProfileModal = ({
 }: EditProfileModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const updateProfileMutation = useUpdateProfile();
+  const updateProfileMutation = useUpdateMyProfile(); // Usar useUpdateMyProfile
+  const { user } = useAuthStore();
 
   const {
     register,
@@ -56,15 +58,20 @@ const EditProfileModal = ({
     defaultValues: {
       bio: profile.bio || '',
       location: profile.location || '',
-      skills: profile.skills.join(', '),
+      skills: Array.isArray(profile.skills)
+        ? profile.skills.filter(Boolean).join(', ')
+        : '',
       experience: profile.experience || '',
-      interests: profile.interests?.join(', ') || '',
+      interests: Array.isArray(profile.interests)
+        ? profile.interests.filter(Boolean).join(', ')
+        : '',
       socialLinks: {
-        linkedin: profile.socialLinks.linkedin || '',
-        github: profile.socialLinks.github || '',
+        linkedin: profile.socialLinks?.linkedin || '',
+        github: profile.socialLinks?.github || '',
       },
       contactEmail: profile.contactEmail || profile.email || '',
       contactPhone: profile.contactPhone || '',
+      ocupation: profile.ocupation || '',
     },
   });
 
@@ -87,7 +94,7 @@ const EditProfileModal = ({
         .filter(Boolean)
     : [];
 
-  // Función para obtener color consistente por habilidad (igual que en SkillsSection)
+  // Función para obtener color consistente por habilidad
   const getSkillColor = (skill: string) => {
     const colors = [
       'bg-blue-100 text-blue-700',
@@ -200,24 +207,36 @@ const EditProfileModal = ({
   const onSubmit = async (data: ProfileFormData) => {
     setIsSubmitting(true);
     try {
-      const updateData = {
+      // Preparar datos para enviar al backend
+      const updateData: Partial<UserProfile> = {
         bio: data.bio,
         location: data.location,
         skills: data.skills
           .split(',')
           .map((skill) => skill.trim())
           .filter(Boolean),
-        experience: data.experience,
+        experience: data.experience || '',
         interests: data.interests
           ? data.interests
               .split(',')
               .map((int) => int.trim())
               .filter(Boolean)
           : [],
-        socialLinks: data.socialLinks,
+        socialLinks: {
+          linkedin: data.socialLinks.linkedin || '',
+          github: data.socialLinks.github || '',
+        },
         contactEmail: data.contactEmail,
-        contactPhone: data.contactPhone,
+        contactPhone: data.contactPhone || '',
+        ocupation: data.ocupation || '',
+        name: profile.name || user?.name || '',
+        countryId: profile.countryId || '',
+        certifications: profile.certifications || [],
+        password: '',
+        imageUrl: profile.imageUrl || '',
       };
+
+      console.log('Sending update data:', updateData);
 
       await updateProfileMutation.mutateAsync(updateData);
 
@@ -227,9 +246,12 @@ const EditProfileModal = ({
         setShowSuccessMessage(false);
         onClose();
         reset();
+        // Recargar la página para mostrar los cambios y las estadísticas demo
+        window.location.reload();
       }, 2000);
     } catch (error) {
       console.error('Error updating profile:', error);
+      alert('Error al actualizar el perfil. Por favor, intenta de nuevo.');
     } finally {
       setIsSubmitting(false);
     }
@@ -296,6 +318,17 @@ const EditProfileModal = ({
                     </span>
                   </div>
                 </div>
+
+                {/* Ocupación */}
+                <InputField
+                  label="Ocupación"
+                  type="text"
+                  placeholder="Ej: Estudiante de Ingeniería, Senior Developer, etc."
+                  register={register('ocupation')}
+                  error={errors.ocupation?.message}
+                  labelColor="text-gray-700"
+                  inputBg="bg-gray-50"
+                />
               </div>
             )}
 
@@ -327,18 +360,33 @@ const EditProfileModal = ({
                   inputBg="bg-gray-50"
                 />
 
+                <InputField
+                  label="Teléfono (opcional)"
+                  type="tel"
+                  placeholder="+57 300 123 4567"
+                  register={register('contactPhone')}
+                  error={errors.contactPhone?.message}
+                  labelColor="text-gray-700"
+                  inputBg="bg-gray-50"
+                />
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block mb-1 font-medium text-gray-700 text-sm flex items-center gap-2">
                       <Linkedin className="w-4 h-4 text-blue-600" />
                       LinkedIn
                     </label>
-                    <input
-                      type="text"
-                      placeholder="tu-usuario"
-                      className="w-full border border-theme-border-primary rounded-lg px-4 py-2.5 placeholder-theme-placeholder-primary focus:outline-none focus:ring-2 focus:ring-theme-button-primary focus:border-transparent transition-all text-sm bg-gray-50"
-                      {...register('socialLinks.linkedin')}
-                    />
+                    <div className="flex items-center">
+                      <span className="px-3 py-2.5 bg-gray-200 text-gray-600 text-sm rounded-l-lg border border-r-0 border-theme-border-primary">
+                        linkedin.com/in/
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="tu-usuario"
+                        className="flex-1 border border-theme-border-primary rounded-r-lg px-4 py-2.5 placeholder-theme-placeholder-primary focus:outline-none focus:ring-2 focus:ring-theme-button-primary focus:border-transparent transition-all text-sm bg-gray-50"
+                        {...register('socialLinks.linkedin')}
+                      />
+                    </div>
                     <span className="text-xs text-gray-500 mt-1 block">
                       Solo tu nombre de usuario (ej: juan-perez)
                     </span>
@@ -349,12 +397,17 @@ const EditProfileModal = ({
                       <Github className="w-4 h-4 text-gray-700" />
                       GitHub
                     </label>
-                    <input
-                      type="text"
-                      placeholder="tu-usuario"
-                      className="w-full border border-theme-border-primary rounded-lg px-4 py-2.5 placeholder-theme-placeholder-primary focus:outline-none focus:ring-2 focus:ring-theme-button-primary focus:border-transparent transition-all text-sm bg-gray-50"
-                      {...register('socialLinks.github')}
-                    />
+                    <div className="flex items-center">
+                      <span className="px-3 py-2.5 bg-gray-200 text-gray-600 text-sm rounded-l-lg border border-r-0 border-theme-border-primary">
+                        github.com/
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="tu-usuario"
+                        className="flex-1 border border-theme-border-primary rounded-r-lg px-4 py-2.5 placeholder-theme-placeholder-primary focus:outline-none focus:ring-2 focus:ring-theme-button-primary focus:border-transparent transition-all text-sm bg-gray-50"
+                        {...register('socialLinks.github')}
+                      />
+                    </div>
                     <span className="text-xs text-gray-500 mt-1 block">
                       Solo tu nombre de usuario (ej: juanperez)
                     </span>
@@ -410,13 +463,23 @@ const EditProfileModal = ({
             {(section === 'all' || section === 'interests') && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Intereses
+                  {user?.role === 'ROLE_MENTOR'
+                    ? 'Especialidades de Mentoría'
+                    : 'Objetivos de Aprendizaje'}
                 </h3>
 
                 <div>
                   <TextareaField
-                    label="Áreas de interés"
-                    placeholder="Primer empleo en tech, Transición de carrera, React y ecosistema, etc."
+                    label={
+                      user?.role === 'ROLE_MENTOR'
+                        ? 'En qué temas puedes ayudar como mentor'
+                        : 'Qué te interesa aprender'
+                    }
+                    placeholder={
+                      user?.role === 'ROLE_MENTOR'
+                        ? 'Transición de carrera, Entrevistas técnicas, React y ecosistema, etc.'
+                        : 'Primer empleo en tech, Frontend development, React, etc.'
+                    }
                     register={register('interests')}
                     error={errors.interests?.message}
                     rows={3}
@@ -424,8 +487,9 @@ const EditProfileModal = ({
                     inputBg="bg-gray-50"
                   />
                   <p className="text-sm text-gray-500 mt-1">
-                    Temas que te motivan y quieres explorar (Separa los
-                    intereses con comas)
+                    {user?.role === 'ROLE_MENTOR'
+                      ? 'Temas en los que puedes guiar a estudiantes (Separa con comas)'
+                      : 'Temas que te motivan y quieres explorar (Separa con comas)'}
                   </p>
 
                   {/* Preview de intereses con emojis dinámicos y colores consistentes */}
@@ -449,6 +513,35 @@ const EditProfileModal = ({
                       </div>
                     </div>
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* 5. Experiencia */}
+            {(section === 'all' || section === 'experience') && (
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Experiencia
+                </h3>
+
+                <div>
+                  <TextareaField
+                    label={
+                      user?.role === 'ROLE_MENTOR'
+                        ? 'Experiencia profesional'
+                        : 'Experiencia académica y proyectos'
+                    }
+                    placeholder={
+                      user?.role === 'ROLE_MENTOR'
+                        ? 'Empresas donde has trabajado, roles, proyectos destacados...'
+                        : 'Proyectos universitarios, prácticas, trabajos de medio tiempo...'
+                    }
+                    register={register('experience')}
+                    error={errors.experience?.message}
+                    rows={4}
+                    labelColor="text-gray-700"
+                    inputBg="bg-gray-50"
+                  />
                 </div>
               </div>
             )}

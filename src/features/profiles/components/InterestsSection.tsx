@@ -1,11 +1,19 @@
-import type { MentorProfile } from '../services/profileService';
+import useAuthStore from '../../auth/store/useAuthStore';
+import type { UserProfile } from '../services/profileService';
 
 interface InterestsSectionProps {
-  profile: MentorProfile;
+  profile: UserProfile | undefined;
 }
 
 const InterestsSection = ({ profile }: InterestsSectionProps) => {
-  // Función para obtener emoji basado en palabras clave (EXACTA del modal)
+  const { user } = useAuthStore();
+  const isStudent = user?.role === 'ROLE_USER';
+  const isEmpty =
+    !profile?.interests ||
+    profile.interests.length === 0 ||
+    (profile.interests.length === 1 && profile.interests[0] === '');
+
+  // Función para obtener emoji basado en palabras clave
   const getEmojiForInterest = (interest: string) => {
     const lowerInterest = interest.toLowerCase();
 
@@ -75,7 +83,7 @@ const InterestsSection = ({ profile }: InterestsSectionProps) => {
     return '✨'; // Default
   };
 
-  // Función para obtener color consistente por interés (EXACTA del modal)
+  // Función para obtener color consistente por interés
   const getInterestColor = (interest: string) => {
     const colors = [
       'bg-purple-100 text-purple-700 border-purple-200',
@@ -94,28 +102,57 @@ const InterestsSection = ({ profile }: InterestsSectionProps) => {
     return colors[Math.abs(hash) % colors.length];
   };
 
-  if (!profile.interests || profile.interests.length === 0) {
-    return null;
-  }
-
   return (
     <div className="bg-white rounded-xl shadow-lg p-5 mb-4 font-Inter">
       <h2 className="text-xl font-bold text-gray-900 font-Inter mb-4">
         Intereses
       </h2>
 
-      {/* Ahora usando chips con colores y emojis como en el modal */}
-      <div className="flex flex-wrap gap-2">
-        {profile.interests.map((interest) => (
-          <span
-            key={interest}
-            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${getInterestColor(interest)}`}
-          >
-            <span className="text-base">{getEmojiForInterest(interest)}</span>
-            {interest}
-          </span>
-        ))}
-      </div>
+      {isEmpty ? (
+        <div className="text-center py-8 text-gray-400">
+          <div className="mb-4">
+            <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gray-100 flex items-center justify-center">
+              <span className="text-2xl">✨</span>
+            </div>
+          </div>
+          {isStudent ? (
+            <>
+              <p className="text-sm">
+                Comparte qué te interesa aprender para conectar con mentores
+                afines.
+              </p>
+              <p className="text-xs mt-2">
+                React, Primer empleo, Frontend development, etc.
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-sm">
+                Comparte en qué temas puedes ayudar como mentor.
+              </p>
+              <p className="text-xs mt-2">
+                Transición de carrera, Entrevistas técnicas, Liderazgo, etc.
+              </p>
+            </>
+          )}
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-2">
+          {profile.interests
+            .filter((interest) => interest && interest.trim() !== '') // Filtrar intereses vacíos
+            .map((interest) => (
+              <span
+                key={interest}
+                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${getInterestColor(interest)}`}
+              >
+                <span className="text-base">
+                  {getEmojiForInterest(interest)}
+                </span>
+                {interest}
+              </span>
+            ))}
+        </div>
+      )}
     </div>
   );
 };

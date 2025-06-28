@@ -1,69 +1,76 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getMockProfile, type UserProfile } from '../services/profileService';
-import useAuthStore from '../../auth/store/useAuthStore';
+import {
+  getMyProfile,
+  getProfile,
+  updateMyProfile,
+  createMyProfile,
+  type UserProfile,
+} from '../services/profileService';
 
-/// Hook para obtener perfil
-export const useProfile = (userId?: string) => {
-  const { user } = useAuthStore();
-  const profileId = userId || user?.id;
-
+// Hook para obtener MI PROPIO perfil (usuario autenticado)
+export const useMyProfile = () => {
   return useQuery({
-    queryKey: ['profile', profileId],
+    queryKey: ['profile', 'me'],
     queryFn: async () => {
-      console.log('useProfile - queryFn ejecutándose');
-      console.log('useProfile - profileId:', profileId);
-      console.log('useProfile - user:', user);
-
-      if (!profileId) {
-        console.log('useProfile - No profileId, usando mock');
-        return getMockProfile(); // Devolver mock aunque no haya ID
-      }
-
-      // Por ahora usar mock, después cambiar a:
-      // return await getProfile(profileId);
-      console.log('useProfile - Devolviendo mock profile');
-      return getMockProfile();
+      console.log('useMyProfile - obteniendo mi perfil');
+      return await getMyProfile();
     },
-    enabled: true, // Cambiar de !!profileId a true para que siempre ejecute
     staleTime: 5 * 60 * 1000, // 5 minutos
+    retry: false, // No reintentar automáticamente en caso de error 500
   });
 };
 
-// Hook para actualizar perfil usando PUT /api/profile/{id}
-export const useUpdateProfile = () => {
+// Hook para obtener perfil de OTRO usuario por ID
+export const useProfile = (userId: string | undefined) => {
+  return useQuery({
+    queryKey: ['profile', userId],
+    queryFn: async () => {
+      console.log('useProfile - obteniendo perfil de usuario:', userId);
+
+      if (!userId) {
+        throw new Error('No user ID provided');
+      }
+
+      return await getProfile(userId);
+    },
+    enabled: !!userId,
+    staleTime: 5 * 60 * 1000, // 5 minutos
+    retry: false,
+  });
+};
+
+// Hook para actualizar MI PROPIO perfil
+export const useUpdateMyProfile = () => {
   const queryClient = useQueryClient();
-  const { user } = useAuthStore();
 
   return useMutation({
     mutationFn: async (data: Partial<UserProfile>) => {
-      if (!user?.id) throw new Error('No user ID');
-
-      // Cuando conectes al backend real, usar:
-      // return await updateProfile(user.id, data);
-
-      // Simulación temporal
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const currentProfile = getMockProfile();
-
-      // Simular actualización
-      return {
-        ...currentProfile,
-        bio: data.bio || currentProfile.bio,
-        location: data.location || currentProfile.location,
-        skills: data.skills || currentProfile.skills,
-        socialLinks: { ...currentProfile.socialLinks, ...data.socialLinks },
-        experience: data.experience || currentProfile.experience || '',
-      };
+      try {
+        // Intentar actualizar mi perfil existente
+        return await updateMyProfile(data);
+      } catch (error: unknown) {
+        // Si mi perfil no existe (404), crear uno nuevo
+        if (error && typeof error === 'object' && 'response' in error) {
+          const axiosError = error as { response?: { status?: number } };
+          if (axiosError?.response?.status === 404) {
+            return await createMyProfile(data);
+          }
+        }
+        throw error;
+      }
     },
     onSuccess: (updatedProfile) => {
-      // Actualizar cache
-      queryClient.setQueryData(['profile', user?.id], updatedProfile);
+      // Actualizar cache de mi perfil
+      queryClient.setQueryData(['profile', 'me'], updatedProfile);
 
-      // Invalidar para refetch
+      // Invalidar todas las queries de perfil para refetch
       queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
-    onError: (error) => {
-      console.error('Error updating profile:', error);
+    onError: (error: unknown) => {
+      console.error('Error updating/creating my profile:', error);
     },
   });
 };
+
+// Mantener el hook anterior para compatibilidad (DEPRECATED)
+export const useUpdateProfile = useUpdateMyProfile;
