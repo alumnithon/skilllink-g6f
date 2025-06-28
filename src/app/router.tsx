@@ -12,6 +12,7 @@ import SideBar from '../shared/components/SideBar';
 import Loading from '../shared/components/Loading';
 import useAuthStore from '../features/auth/store/useAuthStore';
 import DashboardPage from '../features/profiles/pages/DashboardPage';
+import OpportunityPage from '../features/opportunities/pages/OpportunityPage';
 
 // Lazy load de las páginas
 const HomePage = lazy(() => import('../shared/pages/HomePage'));
@@ -49,6 +50,7 @@ const Layout = () => {
         <div className="flex-1 flex h-[calc(100vh-4.25rem-4rem)] md:h-[calc(100vh-4.5rem-5rem)]">
           {isAuthenticated && <SideBar />}
           <main className="max-h-full w-full">
+            {/* paginas privadas */}
             <Outlet />
           </main>
         </div>
@@ -84,6 +86,7 @@ const AppRouter = () => {
         >
           <Route path="/panel" element={<DashboardPage />} />
           <Route path="/perfil" element={<ProfilePage />} />
+          <Route path="/oportunidades" element={<OpportunityPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
