@@ -39,6 +39,30 @@ export interface Opportunity {
   type: 'Curso' | 'Proyecto' | 'Desafío' | 'Oportunidad';
 }
 
+// Tipos para crear nuevas oportunidades
+export interface CreateCourseData {
+  id?: number;
+  title: string;
+  description: string;
+  hasCertification: boolean;
+  tagsName: string[];
+}
+
+export interface CreateChallengeData {
+  title: string;
+  description: string;
+  difficultyLevel: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
+  deadline: string; // formato YYYY-MM-DD
+  tagsName: string[];
+}
+
+export interface CreateProjectData {
+  title: string;
+  description: string;
+  difficultyLevel: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
+  tagsName: string[];
+}
+
 // Servicio para obtener cursos
 export async function getCoursesService(): Promise<Course[]> {
   try {
@@ -133,4 +157,53 @@ export async function getMentorOpportunitiesService(): Promise<Opportunity[]> {
       type: 'Oportunidad',
     },
   ];
+}
+
+// Servicios para crear nuevas oportunidades
+export async function createCourseService(
+  courseData: CreateCourseData
+): Promise<Course> {
+  try {
+    const response = await api.post('/courses/mentor', courseData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken') || ''}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating course:', error);
+    throw error;
+  }
+}
+
+export async function createChallengeService(
+  challengeData: CreateChallengeData
+): Promise<Challenge> {
+  try {
+    const response = await api.post('/challenge/mentor', challengeData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken') || ''}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating challenge:', error);
+    throw error;
+  }
+}
+
+export async function createProjectService(
+  projectData: CreateProjectData
+): Promise<Project> {
+  try {
+    const response = await api.post('/projects/mentor', projectData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken') || ''}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating project:', error);
+    throw error;
+  }
 }

@@ -1,13 +1,20 @@
 import { Search } from 'lucide-react';
+import { useState } from 'react';
 import Breadcrumb from '../../../shared/components/Breadcrumb';
 import OpportunityCard from '../../../shared/components/OpportunityCard';
 import useAuthStore from '../../auth/store/useAuthStore';
 import { useOpportunities } from '../hooks/useOpportunities';
 import Loading from '../../../shared/components/Loading';
+import CreateOpportunityModal from '../components/CreateOpportunityModal';
 
 const OpportunityPage = () => {
   const user = useAuthStore((state) => state.user);
-  const { opportunities, loading, error } = useOpportunities();
+  const { opportunities, loading, error, refetch } = useOpportunities();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCreateSuccess = () => {
+    refetch();
+  };
 
   return (
     <div className="h-full flex flex-col bg-gray-50">
@@ -21,7 +28,10 @@ const OpportunityPage = () => {
               <h1 className="text-2xl lg:text-3xl font-bold text-green-600 font-Inter mt-1">
                 Mis Oportunidades
               </h1>
-              <button className="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-600/80">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-600/80 text-white"
+              >
                 Crear Oportunidad
               </button>
             </div>
@@ -94,6 +104,13 @@ const OpportunityPage = () => {
           )}
         </div>
       </div>
+
+      {/* Modal para crear oportunidad */}
+      <CreateOpportunityModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={handleCreateSuccess}
+      />
     </div>
   );
 };
