@@ -9,7 +9,7 @@ import { loginSchema, registerSchema } from '../validation/validationSchemas';
 export async function loginService(userData: LoginFormData) {
   loginSchema.parse(userData);
   try {
-    const response = await api.post('/login', userData);
+    const response = await api.post('/auth', userData);
     localStorage.setItem('authToken', response.data.token);
     localStorage.setItem('userData', JSON.stringify(response.data.user));
     return response.data.user;
@@ -24,7 +24,7 @@ export async function registerService(userData: RegisterFormData) {
   const parsedData = registerSchema.parse(userData);
   const finalData = {
     ...parsedData,
-    userType: parsedData.userType || 'Estudiante',
+    role: parsedData.role || 'ROLE_USER', // Asignar ROLE_USER por defecto si no se especifica
   };
   try {
     const response = await api.post('/register', finalData);

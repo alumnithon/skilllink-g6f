@@ -46,8 +46,8 @@ const RegisterPage = () => {
           label="Nombre Completo"
           type="name"
           placeholder="Ingresa tu Nombre Completo"
-          register={register('fullName', { required: true })}
-          error={errors.fullName?.message}
+          register={register('name', { required: true })}
+          error={errors.name?.message}
         />
         <InputField
           label="Email"
@@ -61,14 +61,14 @@ const RegisterPage = () => {
           error={errors.password?.message}
         />
         <Controller
-          name="userType"
+          name="role"
           control={control}
           defaultValue={undefined}
           render={({ field }) => (
             <SelectDropdown
               value={field.value || ''}
               onChange={field.onChange}
-              error={errors.userType?.message}
+              error={errors.role?.message}
             />
           )}
         />

@@ -55,7 +55,7 @@ const ProfilePage = () => {
                 onEditClick={() => setIsEditModalOpen(true)}
               />
               <ContactSection profile={finalProfile} />
-              {user?.role === 'MENTOR' && (
+              {user?.role === 'ROLE_MENTOR' && (
                 <MentorshipSpecialties profile={finalProfile} />
               )}
               <InterestsSection profile={finalProfile} />

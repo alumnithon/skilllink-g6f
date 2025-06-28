@@ -22,7 +22,9 @@ const SelectDropdown = ({ value, onChange, error }: SelectDropdownProps) => {
           onClick={() => setDropdownOpen(!dropdownOpen)}
           className="relative w-full border border-theme-border-primary rounded-lg px-4 py-2 text-left"
         >
-          <span id="selectedOption">{value || 'Selecciona tu perfil'}</span>
+          <span id="selectedOption">
+            {value === 'ROLE_MENTOR' ? 'Mentor' : 'Estudiante'}
+          </span>
         </button>
         {dropdownOpen && (
           <div
@@ -30,7 +32,7 @@ const SelectDropdown = ({ value, onChange, error }: SelectDropdownProps) => {
             className="absolute mt-12 bg-theme-bg-tertiary border border-theme-border-primary rounded-lg shadow-md z-10"
           >
             <div
-              onClick={() => handleSelect('Estudiante')}
+              onClick={() => handleSelect('ROLE_USER')}
               className="p-4 hover:bg-theme-bg-secondary rounded-t-lg cursor-pointer border-b border-theme-border-primary"
             >
               <div className="flex items-center gap-2">
@@ -42,7 +44,7 @@ const SelectDropdown = ({ value, onChange, error }: SelectDropdownProps) => {
               </p>
             </div>
             <div
-              onClick={() => handleSelect('Mentor')}
+              onClick={() => handleSelect('ROLE_MENTOR')}
               className="p-4 hover:bg-theme-bg-secondary rounded-b-lg cursor-pointer"
             >
               <div className="flex items-center gap-2">
