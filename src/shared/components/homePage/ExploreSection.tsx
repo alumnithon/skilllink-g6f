@@ -6,6 +6,8 @@ const ExploreSection = () => {
   const [activeButton, setActiveButton] = useState('');
 
   interface Item {
+    id: number;
+    tags?: string[];
     title: string;
     description: string;
   }
@@ -20,36 +22,48 @@ const ExploreSection = () => {
     const fetchData = async () => {
       const fetchedMentorships = [
         {
+          id: 1,
           title: 'Introducción a React',
+          tags: ['React', 'Frontend', 'JavaScript'],
           description:
             'Aprende los fundamentos de React y cómo construir interfaces interactivas.',
           image: 'https://example.com/react-course.jpg',
         },
         {
+          id: 2,
           title: 'Diseño UX/UI',
+          tags: ['UX/UI', 'Diseño', 'Interacción'],
           description:
             'Descubre cómo diseñar experiencias de usuario atractivas y funcionales.',
           image: 'https://example.com/ux-ui.jpg',
         },
         {
+          id: 3,
           title: 'Mentoría en Data Science',
+          tags: ['Data Science', 'Python', 'Machine Learning'],
           description:
             'Explora el mundo de la ciencia de datos con un mentor experimentado.',
           image: 'https://example.com/data-science.jpg',
         },
         {
+          id: 4,
           title: 'Desarrollo Backend con Node.js',
+          tags: ['Node.js', 'Backend', 'JavaScript'],
           description: 'Domina la creación de APIs robustas y escalables.',
           image: 'https://example.com/nodejs-backend.jpg',
         },
         {
+          id: 5,
           title: 'Introducción a DevOps',
+          tags: ['DevOps', 'Infraestructura', 'Automatización'],
           description:
             'Conoce las herramientas y prácticas para integrar desarrollo y operaciones.',
           image: 'https://example.com/devops.jpg',
         },
         {
+          id: 6,
           title: 'Mentoría en Inteligencia Artificial',
+          tags: ['IA', 'Machine Learning', 'Python'],
           description:
             'Aprende sobre modelos de IA y su implementación práctica.',
           image: 'https://example.com/ai-mentorship.jpg',
@@ -57,36 +71,48 @@ const ExploreSection = () => {
       ];
       const fetchedProjects = [
         {
+          id: 1,
           title: 'Aplicación de Tareas',
+          tags: ['React', 'Firebase', 'Frontend'],
           description:
             'Un proyecto para gestionar tareas diarias con React y Firebase.',
           image: 'https://example.com/task-app.jpg',
         },
         {
+          id: 2,
           title: 'E-commerce Básico',
+          tags: ['Next.js', 'E-commerce', 'React'],
           description:
             'Crea una tienda en línea funcional con carrito de compras.',
           image: 'https://example.com/ecommerce.jpg',
         },
         {
+          id: 3,
           title: 'Dashboard de Analíticas',
+          tags: ['React', 'Dashboard', 'Data Visualization'],
           description:
             'Desarrolla un panel para visualizar datos en tiempo real.',
           image: 'https://example.com/analytics-dashboard.jpg',
         },
         {
-          title: 'Juego de Memoria',
+          id: 4,
+          title: 'Juego de Adivinanzas',
+          tags: ['JavaScript', 'Juego', 'Frontend'],
           description:
             'Construye un juego interactivo para mejorar la memoria.',
           image: 'https://example.com/memory-game.jpg',
         },
         {
+          id: 5,
           title: 'Blog Personal',
+          tags: ['Next.js', 'Blog', 'React'],
           description: 'Diseña y desarrolla un blog personal con Next.js.',
           image: 'https://example.com/personal-blog.jpg',
         },
         {
+          id: 6,
           title: 'Sistema de Reservas',
+          tags: ['React', 'Node.js', 'Express'],
           description:
             'Implementa un sistema para gestionar reservas de eventos.',
           image: 'https://example.com/booking-system.jpg',
@@ -134,9 +160,10 @@ const ExploreSection = () => {
               [...mentorships.slice(0, 3), ...projects.slice(0, 3)].map(
                 (item) => (
                   <OpportunityCard
-                    key={item.title}
+                    id={item.id}
                     title={item.title}
                     description={item.description}
+                    tagsName={item.tags || []}
                     image={image}
                     type={mentorships.includes(item) ? 'Mentoría' : 'Proyecto'}
                   />
@@ -145,8 +172,9 @@ const ExploreSection = () => {
             {activeButton === 'Mentorías' &&
               mentorships.map((mentorship) => (
                 <OpportunityCard
-                  key={mentorship.title}
+                  id={mentorship.id}
                   title={mentorship.title}
+                  tagsName={mentorship.tags || []}
                   description={mentorship.description}
                   image={image}
                   type="Mentoría"
@@ -155,9 +183,10 @@ const ExploreSection = () => {
             {activeButton === 'Proyectos' &&
               projects.map((project) => (
                 <OpportunityCard
-                  key={project.title}
+                  id={project.id}
                   title={project.title}
                   description={project.description}
+                  tagsName={project.tags || []}
                   image={image}
                   type="Proyecto"
                 />
